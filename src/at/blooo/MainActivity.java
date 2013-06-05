@@ -9,6 +9,8 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.sensor.acceleration.AccelerationData;
+import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -20,16 +22,32 @@ import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
-public class MainActivity extends BaseGameActivity {
-  
+import android.util.Log;
+
+public class MainActivity extends BaseGameActivity implements
+    IAccelerationListener {
+
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
-
 
   Camera mCamera;
   ITextureRegion mBlock;
   Scene mScene;
   Sprite mSprite;
+  
+  float yVal = 0;
+
+  @Override
+  public void onResumeGame() {
+    super.onResumeGame();
+    this.enableAccelerationSensor(this);
+  }
+
+  @Override
+  public void onPauseGame() {
+    super.onPauseGame();
+    this.disableAccelerationSensor();
+  }
 
   @Override
   public EngineOptions onCreateEngineOptions() {
@@ -41,14 +59,12 @@ public class MainActivity extends BaseGameActivity {
     return engineOptions;
 
   }
-  
+
   @Override
-  public Engine onCreateEngine(EngineOptions eo){
-    
+  public Engine onCreateEngine(EngineOptions eo) {
+
     return new FixedStepEngine(eo, 60);
   }
-  
-  
 
   @Override
   public void onCreateResources(
@@ -72,23 +88,23 @@ public class MainActivity extends BaseGameActivity {
     }
 
     mBuildableBitmapTextureAtlas.load();
-    
+
     pOnCreateResourcesCallback.onCreateResourcesFinished();
 
   }
 
   @Override
   public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
-    
+
     mScene = new Scene();
-    
-    final float positionX = WIDTH * 0.2f;
+
+    final float positionX = WIDTH * 0.5f;
     final float positionY = HEIGHT * 0.5f;
 
-    this.mSprite = new Sprite(positionX, positionY,
-    mBlock, mEngine.getVertexBufferObjectManager());
+    this.mSprite = new Sprite(positionX, positionY, mBlock,
+        mEngine.getVertexBufferObjectManager());
     mScene.attachChild(mSprite);
-    
+
     pOnCreateSceneCallback.onCreateSceneFinished(mScene);
 
   }
@@ -96,23 +112,36 @@ public class MainActivity extends BaseGameActivity {
   @Override
   public void onPopulateScene(Scene pScene,
       OnPopulateSceneCallback pOnPopulateSceneCallback) {
-    
-    mScene.registerUpdateHandler(new IUpdateHandler(){
+
+    mScene.registerUpdateHandler(new IUpdateHandler() {
 
       @Override
       public void onUpdate(float pSecondsElapsed) {
-        mSprite.setX((mSprite.getX()+3) % WIDTH);
-        
+        MainActivity.this.mSprite.setX((MainActivity.this.mSprite.getX() + 3) % WIDTH);
+        //mSprite.setY(HEIGHT/2 + (int) (40 * MainActivity.this.yVal));
+        MainActivity.this.mSprite.setY(MainActivity.this.mSprite.getY() + 3* MainActivity.this.yVal);
       }
 
       @Override
       public void reset() {
         // TODO Auto-generated method stub
-        
+
       }
-      
+
     });
 
     pOnPopulateSceneCallback.onPopulateSceneFinished();
+  }
+
+  @Override
+  public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void onAccelerationChanged(AccelerationData pAccelerationData) {
+    this.yVal = pAccelerationData.getY();
+
   }
 }
