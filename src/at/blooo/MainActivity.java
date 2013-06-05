@@ -23,6 +23,8 @@ import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import at.blooo.tetris.Tetris;
+
 public class MainActivity extends BaseGameActivity implements
     IAccelerationListener {
 
@@ -39,6 +41,8 @@ public class MainActivity extends BaseGameActivity implements
   
   float yVal = 0;
   float mSpeed = 0.5f;
+  
+  Tetris mTetris;
 
   @Override
   public void onResumeGame() {
@@ -107,6 +111,10 @@ public class MainActivity extends BaseGameActivity implements
     this.mSprite = new Sprite(positionX, positionY, mBlock,
         mEngine.getVertexBufferObjectManager());
     mScene.attachChild(mSprite);
+    
+    mTetris = new Tetris(this);
+    mTetris.initField();
+    mScene.attachChild(mTetris);
 
     pOnCreateSceneCallback.onCreateSceneFinished(mScene);
 
@@ -162,5 +170,10 @@ public class MainActivity extends BaseGameActivity implements
       public void run() {
         e.detachSelf();
       }});
+  }
+  
+  public Sprite createBlock(int x, int y){
+    return new Sprite(x, y, mBlock,
+        mEngine.getVertexBufferObjectManager());
   }
 }
