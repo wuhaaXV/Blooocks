@@ -22,20 +22,22 @@ import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import android.util.Log;
-
 public class MainActivity extends BaseGameActivity implements
     IAccelerationListener {
 
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
+  
+  float mTime = 0.0f;
 
   Camera mCamera;
   ITextureRegion mBlock;
   Scene mScene;
   Sprite mSprite;
+  int mBlocksize = 64;
   
   float yVal = 0;
+  float mSpeed = 1;
 
   @Override
   public void onResumeGame() {
@@ -117,9 +119,17 @@ public class MainActivity extends BaseGameActivity implements
 
       @Override
       public void onUpdate(float pSecondsElapsed) {
-        MainActivity.this.mSprite.setX((MainActivity.this.mSprite.getX() + 3) % WIDTH);
+        MainActivity.this.mTime += pSecondsElapsed;
+        
+        if (MainActivity.this.mTime < mSpeed){
+          return;
+        }
+        
+        MainActivity.this.mTime = 0;
+        
+        MainActivity.this.mSprite.setX((MainActivity.this.mSprite.getX() + mBlocksize) % WIDTH);
         //mSprite.setY(HEIGHT/2 + (int) (40 * MainActivity.this.yVal));
-        MainActivity.this.mSprite.setY(MainActivity.this.mSprite.getY() + 3* MainActivity.this.yVal);
+        MainActivity.this.mSprite.setY(MainActivity.this.mSprite.getY() + 4*MainActivity.this.yVal);
       }
 
       @Override
