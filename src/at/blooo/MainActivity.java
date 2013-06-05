@@ -38,7 +38,7 @@ public class MainActivity extends BaseGameActivity implements
   int mBlocksize = 64;
   
   float yVal = 0;
-  float mSpeed = 1;
+  float mSpeed = 0.5f;
 
   @Override
   public void onResumeGame() {
@@ -130,7 +130,7 @@ public class MainActivity extends BaseGameActivity implements
         
         MainActivity.this.mSprite.setX((MainActivity.this.mSprite.getX() + mBlocksize) % WIDTH);
         //mSprite.setY(HEIGHT/2 + (int) (40 * MainActivity.this.yVal));
-        MainActivity.this.mSprite.setY(MainActivity.this.mSprite.getY() + 4*MainActivity.this.yVal);
+        MainActivity.this.mSprite.setY(MainActivity.this.mSprite.getY() + (MainActivity.this.yVal / 4) * mBlocksize );
       }
 
       @Override
