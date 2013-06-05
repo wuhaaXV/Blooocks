@@ -7,6 +7,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.sensor.acceleration.AccelerationData;
@@ -153,5 +154,13 @@ public class MainActivity extends BaseGameActivity implements
   public void onAccelerationChanged(AccelerationData pAccelerationData) {
     this.yVal = pAccelerationData.getY();
 
+  }
+  
+  public void removeFromScene(final Entity e){
+    runOnUpdateThread(new Runnable() {
+      @Override
+      public void run() {
+        e.detachSelf();
+      }});
   }
 }
