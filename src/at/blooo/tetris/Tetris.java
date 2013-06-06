@@ -1,8 +1,6 @@
 package at.blooo.tetris;
 
 import org.andengine.entity.Entity;
-import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.sprite.Sprite;
 
 import android.util.Log;
 import at.blooo.MainActivity;

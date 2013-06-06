@@ -1,10 +1,8 @@
 package at.blooo.tetris;
 
 import org.andengine.entity.Entity;
-import org.andengine.entity.primitive.Rectangle;
 
 import android.util.Log;
-import at.blooo.MainActivity;
 
 public class Stone {
 
