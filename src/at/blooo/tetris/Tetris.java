@@ -21,7 +21,7 @@ public class Tetris extends Entity {
     mStone = new Stone(this, mPartSize, mStoneSize);
   }
 
-  public void initField() {
+  public synchronized void initField() {
 
     for (int r = 0; r < ROWS; r++) {
       for (int c = 0; c < COLUMNS; c++) {
@@ -36,15 +36,19 @@ public class Tetris extends Entity {
     mStone.setStone();
   }
 
-  public void moveLeft() {
+  public synchronized void moveLeft() {
     mStone.moveLeft();
   }
 
-  public void moveRight() {
+  public synchronized void moveRight() {
     mStone.moveRight();
   }
+  
+  public synchronized void rotateRight(){
+    mStone.rotateRight();
+  }
 
-  public void moveDown() {
+  public synchronized void moveDown() {
     if (mStone.collidesOnNextDrop()) {
       mStone.freeze();
       mStone.setStone();
@@ -56,11 +60,7 @@ public class Tetris extends Entity {
     }
   }
 
-  void moveToBottom() {
-
-  }
-
-  void draw() {
+  synchronized void moveToBottom() {
 
   }
 

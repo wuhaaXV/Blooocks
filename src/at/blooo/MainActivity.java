@@ -178,6 +178,10 @@ public class MainActivity extends BaseGameActivity implements
       mTetris.moveRight();
       return false;
     }
+    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+      mTetris.rotateRight();
+      return false;
+    }
     
     return super.onKeyDown(keyCode, event);
   }

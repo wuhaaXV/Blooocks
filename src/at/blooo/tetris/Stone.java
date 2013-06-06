@@ -11,6 +11,7 @@ public class Stone {
   public int mRow;
 
   Entity[][] mParts;
+  Entity[][] mTempParts;
   int mPartsPerSide; /* number of parts along  x and y (array size) */
   int mPartSize; /* size of one part in pixels */
 
@@ -19,6 +20,7 @@ public class Stone {
     mPartSize = partSize;
     mPartsPerSide = partsDim;
     mParts = new Entity[mPartsPerSide][mPartsPerSide];
+    mTempParts = new Entity[mPartsPerSide][mPartsPerSide];
   }
 
   void clear() {
@@ -61,7 +63,8 @@ public class Stone {
     for (int c = 0; c < mPartsPerSide; c++) {
       for (int r = 0; r < mPartsPerSide; r++) {
         if (mParts[c][r] != null) {
-          if (c + x >= mTetris.COLUMNS || c + x < 0 || r + y < 0)
+          if (c + x >= mTetris.COLUMNS || c + x < 0 || 
+              r + y >= mTetris.ROWS ||r + y < 0)
             return true;
 
           if (mTetris.mField[c + x][r + y] != null)
@@ -125,7 +128,26 @@ public class Stone {
     }
   }
   
-
+  boolean rotateRight(){
+    for (int i = 0; i < mPartsPerSide; i++){
+      for (int j = 0; j < mPartsPerSide; j++){
+        mTempParts[i][j] = mParts[mPartsPerSide - j - 1][i];
+      }
+    }
+    
+    Entity[][] swap = mParts;
+    mParts = mTempParts;
+    mTempParts = swap;
+    
+    if (collides()){
+      mTempParts = mParts;
+      mParts = swap;
+      return false;
+    }
+    
+    return true;
+  }
+  
   void freeze() {
     for (int c = 0; c < mPartsPerSide; c++) {
       for (int r = 0; r < mPartsPerSide; r++) {
