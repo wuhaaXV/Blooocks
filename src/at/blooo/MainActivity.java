@@ -23,6 +23,7 @@ import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import android.view.KeyEvent;
 import at.blooo.tetris.Tetris;
 
 public class MainActivity extends BaseGameActivity implements
@@ -115,6 +116,7 @@ public class MainActivity extends BaseGameActivity implements
     mTetris = new Tetris(this);
     mTetris.initField();
     mScene.attachChild(mTetris);
+    mTetris.setScale(0.4f);
 
     pOnCreateSceneCallback.onCreateSceneFinished(mScene);
 
@@ -139,6 +141,7 @@ public class MainActivity extends BaseGameActivity implements
         MainActivity.this.mSprite.setX((MainActivity.this.mSprite.getX() + mBlocksize) % WIDTH);
         //mSprite.setY(HEIGHT/2 + (int) (40 * MainActivity.this.yVal));
         MainActivity.this.mSprite.setY(MainActivity.this.mSprite.getY() + (MainActivity.this.yVal / 4) * mBlocksize );
+        mTetris.moveDown();
       }
 
       @Override
@@ -155,13 +158,28 @@ public class MainActivity extends BaseGameActivity implements
   @Override
   public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
     // TODO Auto-generated method stub
-
   }
 
   @Override
   public void onAccelerationChanged(AccelerationData pAccelerationData) {
     this.yVal = pAccelerationData.getY();
+    //todo: Andi: kann das mitm accelerator nicht testen. Solange mach ich das mit dem hardware dpad
+    // mTetris.moveRight(); bzw mTetris.moveLeft(); aufrufen
+  }
+  
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
 
+    if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+      mTetris.moveLeft();
+      return false;
+    }
+    if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+      mTetris.moveRight();
+      return false;
+    }
+    
+    return super.onKeyDown(keyCode, event);
   }
   
   public void removeFromScene(final Entity e){
