@@ -38,9 +38,9 @@ public class MainActivity extends BaseGameActivity implements
   ITextureRegion mBlock;
   ITextureRegion mTetrisBackground;
   Scene mScene;
-  Sprite mSprite;
   int mBlocksize = 64;
   
+  float xVal = 0;
   float yVal = 0;
   float mSpeed = 0.5f;
   
@@ -113,23 +113,15 @@ public class MainActivity extends BaseGameActivity implements
   @Override
   public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
 
-    mScene = new Scene();
-
-    final float positionX = WIDTH * 0.5f;
-    final float positionY = HEIGHT * 0.5f;
-
-    this.mSprite = new Sprite(positionX, positionY, mBlock,
-        mEngine.getVertexBufferObjectManager());
-    mScene.attachChild(mSprite);
-    
+    mScene = new Scene(); 
     mTetris = new Tetris(this);
 
 
     
-    mTetris.setPosition(200, 200);
+    mTetris.setPosition(0,0);
     mTetris.initField();
     mScene.attachChild(mTetris);
-    mTetris.setScale(0.3f);
+    mTetris.setScale(0.55f);
 
     pOnCreateSceneCallback.onCreateSceneFinished(mScene);
 
@@ -151,9 +143,20 @@ public class MainActivity extends BaseGameActivity implements
         
         MainActivity.this.mTime = 0;
         
-        MainActivity.this.mSprite.setX((MainActivity.this.mSprite.getX() + mBlocksize) % WIDTH);
-        //mSprite.setY(HEIGHT/2 + (int) (40 * MainActivity.this.yVal));
-        MainActivity.this.mSprite.setY(MainActivity.this.mSprite.getY() + (MainActivity.this.yVal / 4) * mBlocksize );
+        
+        int val = (int)(MainActivity.this.xVal);
+        
+        if (val < 0){
+          for (int i = val; i < 0; i++)
+            mTetris.moveLeft();
+        }
+        
+        if (val > 0){
+          for (int i = val; i > 0; i--)
+            mTetris.moveRight();
+      }
+        
+        
         mTetris.moveDown();
       }
 
@@ -176,6 +179,7 @@ public class MainActivity extends BaseGameActivity implements
   @Override
   public void onAccelerationChanged(AccelerationData pAccelerationData) {
     this.yVal = pAccelerationData.getY();
+    this.xVal = pAccelerationData.getX();
     //todo: Andi: kann das mitm accelerator nicht testen. Solange mach ich das mit dem hardware dpad
     // mTetris.moveRight(); bzw mTetris.moveLeft(); aufrufen
   }
