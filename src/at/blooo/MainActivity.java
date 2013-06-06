@@ -36,6 +36,7 @@ public class MainActivity extends BaseGameActivity implements
 
   Camera mCamera;
   ITextureRegion mBlock;
+  ITextureRegion mTetrisBackground;
   Scene mScene;
   Sprite mSprite;
   int mBlocksize = 64;
@@ -86,16 +87,24 @@ public class MainActivity extends BaseGameActivity implements
     this.mBlock = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
         mBuildableBitmapTextureAtlas, this, "blocks.png");
 
+    BuildableBitmapTextureAtlas tetrisBgTextureAtlas = new BuildableBitmapTextureAtlas(
+        mEngine.getTextureManager(), 64, 64, TextureOptions.REPEATING_BILINEAR);
+    
+    // Create our texture region - nothing new here
+    mTetrisBackground = BitmapTextureAtlasTextureRegionFactory.
+    createFromAsset(tetrisBgTextureAtlas, this, "tetrisBgTile.png");
+    
     try {
       mBuildableBitmapTextureAtlas
           .build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
               0, 1, 1));
+      tetrisBgTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,0,0));
     } catch (TextureAtlasBuilderException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
     mBuildableBitmapTextureAtlas.load();
+    tetrisBgTextureAtlas.load();
 
     pOnCreateResourcesCallback.onCreateResourcesFinished();
 
@@ -114,9 +123,13 @@ public class MainActivity extends BaseGameActivity implements
     mScene.attachChild(mSprite);
     
     mTetris = new Tetris(this);
+
+
+    
+    mTetris.setPosition(200, 200);
     mTetris.initField();
     mScene.attachChild(mTetris);
-    mTetris.setScale(0.4f);
+    mTetris.setScale(0.3f);
 
     pOnCreateSceneCallback.onCreateSceneFinished(mScene);
 
@@ -196,6 +209,12 @@ public class MainActivity extends BaseGameActivity implements
   
   public Sprite createBlock(int x, int y){
     return new Sprite(x, y, mBlock,
+        mEngine.getVertexBufferObjectManager());
+  }
+  
+  public Sprite createTetrisBG(int width, int height){
+    mTetrisBackground.setTextureSize(width, height);
+    return new Sprite(0, 0, mTetrisBackground,
         mEngine.getVertexBufferObjectManager());
   }
 }

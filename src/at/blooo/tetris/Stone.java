@@ -39,17 +39,15 @@ public class Stone {
     clear();
 
     mCol = mTetris.COLUMNS / 2 - mPartsPerSide / 2;
-    mRow = mTetris.ROWS - mPartsPerSide / 2;
+    mRow = mTetris.ROWS - mPartsPerSide;
     
-    mParts[0][0] = mTetris.mMainActivity.createBlock(mPartSize * (0 + mCol),
-        mPartSize * (0 + mRow));
-    mParts[1][0] = mTetris.mMainActivity.createBlock(mPartSize * (1 + mCol),
-        mPartSize * (0 + mRow));
-    mParts[2][0] = mTetris.mMainActivity.createBlock(mPartSize * (2 + mCol),
-        mPartSize * (0 + mRow));
-    mParts[2][1] = mTetris.mMainActivity.createBlock(mPartSize * (2 + mCol),
-        mPartSize * (1 + mRow));
+    mParts[0][2] = mTetris.mMainActivity.createBlock(0,0);
+    mParts[1][2] = mTetris.mMainActivity.createBlock(0,0);
+    mParts[2][2] = mTetris.mMainActivity.createBlock(0,0);
+    mParts[2][3] = mTetris.mMainActivity.createBlock(0,0);
 
+    updatePartsPositions();
+    
     for (int c = 0; c < mPartsPerSide; c++) {
       for (int r = 0; r < mPartsPerSide; r++) {
         if (mParts[c][r] != null)
@@ -122,7 +120,7 @@ public class Stone {
       for (int r = 0; r < mPartsPerSide; r++) {
         if (mParts[c][r] != null) {
           Entity brick = mParts[c][r];
-          brick.setPosition((c + mCol) * mPartSize, (r + mRow) * mPartSize);
+          brick.setPosition((c + mCol) * mPartSize + mPartSize/2, (r + mRow) * mPartSize + mPartSize/2);
         }
       }
     }
