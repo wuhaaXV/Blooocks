@@ -31,7 +31,7 @@ public class MainActivity extends BaseGameActivity implements
 
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
-  
+
   float mTime = 0.0f;
 
   Camera mCamera;
@@ -39,11 +39,11 @@ public class MainActivity extends BaseGameActivity implements
   ITextureRegion mTetrisBackground;
   Scene mScene;
   int mBlocksize = 64;
-  
+
   float xVal = 0;
   float yVal = 0;
   float mSpeed = 0.5f;
-  
+
   Tetris mTetris;
 
   @Override
@@ -89,16 +89,18 @@ public class MainActivity extends BaseGameActivity implements
 
     BuildableBitmapTextureAtlas tetrisBgTextureAtlas = new BuildableBitmapTextureAtlas(
         mEngine.getTextureManager(), 64, 64, TextureOptions.REPEATING_BILINEAR);
-    
+
     // Create our texture region - nothing new here
-    mTetrisBackground = BitmapTextureAtlasTextureRegionFactory.
-    createFromAsset(tetrisBgTextureAtlas, this, "tetrisBgTile.png");
-    
+    mTetrisBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+        tetrisBgTextureAtlas, this, "tetrisBgTile.png");
+
     try {
       mBuildableBitmapTextureAtlas
           .build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
               0, 1, 1));
-      tetrisBgTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,0,0));
+      tetrisBgTextureAtlas
+          .build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+              0, 0, 0));
     } catch (TextureAtlasBuilderException e) {
       e.printStackTrace();
     }
@@ -113,12 +115,10 @@ public class MainActivity extends BaseGameActivity implements
   @Override
   public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
 
-    mScene = new Scene(); 
+    mScene = new Scene();
     mTetris = new Tetris(this);
 
-
-    
-    mTetris.setPosition(0,0);
+    mTetris.setPosition(0, 0);
     mTetris.initField();
     mScene.attachChild(mTetris);
     mTetris.setScale(0.55f);
@@ -136,27 +136,25 @@ public class MainActivity extends BaseGameActivity implements
       @Override
       public void onUpdate(float pSecondsElapsed) {
         MainActivity.this.mTime += pSecondsElapsed;
-        
-        if (MainActivity.this.mTime < mSpeed){
+
+        if (MainActivity.this.mTime < mSpeed) {
           return;
         }
-        
+
         MainActivity.this.mTime = 0;
-        
-        
-        int val = (int)(MainActivity.this.xVal);
-        
-        if (val < 0){
+
+        int val = (int) (MainActivity.this.xVal);
+
+        if (val < 0) {
           for (int i = val; i < 0; i++)
             mTetris.moveLeft();
         }
-        
-        if (val > 0){
+
+        if (val > 0) {
           for (int i = val; i > 0; i--)
             mTetris.moveRight();
-      }
-        
-        
+        }
+
         mTetris.moveDown();
       }
 
@@ -180,10 +178,8 @@ public class MainActivity extends BaseGameActivity implements
   public void onAccelerationChanged(AccelerationData pAccelerationData) {
     this.yVal = pAccelerationData.getY();
     this.xVal = pAccelerationData.getX();
-    //todo: Andi: kann das mitm accelerator nicht testen. Solange mach ich das mit dem hardware dpad
-    // mTetris.moveRight(); bzw mTetris.moveLeft(); aufrufen
   }
-  
+
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -199,24 +195,25 @@ public class MainActivity extends BaseGameActivity implements
       mTetris.rotateRight();
       return false;
     }
-    
+
     return super.onKeyDown(keyCode, event);
   }
-  
-  public void removeFromScene(final Entity e){
+
+  public void removeFromScene(final Entity e) {
     runOnUpdateThread(new Runnable() {
+      
       @Override
       public void run() {
         e.detachSelf();
-      }});
+      }
+    });
   }
-  
-  public Sprite createBlock(int x, int y){
-    return new Sprite(x, y, mBlock,
-        mEngine.getVertexBufferObjectManager());
+
+  public Sprite createBlock(int x, int y) {
+    return new Sprite(x, y, mBlock, mEngine.getVertexBufferObjectManager());
   }
-  
-  public Sprite createTetrisBG(int width, int height){
+
+  public Sprite createTetrisBG(int width, int height) {
     mTetrisBackground.setTextureSize(width, height);
     return new Sprite(0, 0, mTetrisBackground,
         mEngine.getVertexBufferObjectManager());

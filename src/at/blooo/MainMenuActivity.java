@@ -6,11 +6,18 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.entity.particle.BatchedSpriteParticleSystem;
+import org.andengine.entity.particle.emitter.CircleOutlineParticleEmitter;
+import org.andengine.entity.particle.initializer.AccelerationParticleInitializer;
+import org.andengine.entity.particle.initializer.AlphaParticleInitializer;
+import org.andengine.entity.particle.initializer.ColorParticleInitializer;
+import org.andengine.entity.particle.initializer.ExpireParticleInitializer;
+import org.andengine.entity.particle.initializer.ScaleParticleInitializer;
+import org.andengine.entity.particle.modifier.ScaleParticleModifier;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.UncoloredSprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -20,10 +27,12 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import android.content.Intent;
+import android.text.style.LineHeightSpan.WithDensity;
 
 public class MainMenuActivity extends BaseGameActivity {
 
@@ -37,6 +46,9 @@ public class MainMenuActivity extends BaseGameActivity {
   ITiledTextureRegion mOptionsButtonTextureRegion;
   ITiledTextureRegion mAboutButtonTextureRegion;
   ITiledTextureRegion mExitButtonTextureRegion;
+
+  ITextureRegion mParticleRegion;
+
   Scene mScene;
   Sprite mSprite;
 
@@ -76,6 +88,9 @@ public class MainMenuActivity extends BaseGameActivity {
         .createTiledFromAsset(mBuildableBitmapTextureAtlas, this,
             "exit_button.png", 2, 1);
 
+    this.mParticleRegion = BitmapTextureAtlasTextureRegionFactory
+        .createFromAsset(mBuildableBitmapTextureAtlas, this, "particle.png");
+
     try {
       mBuildableBitmapTextureAtlas
           .build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -106,6 +121,51 @@ public class MainMenuActivity extends BaseGameActivity {
     // Background background = new Background(0.1f, 0.2f, 1.0f, 1.0f);
 
     // this.mScene.setBackground(background);
+
+    // Particle Test
+
+    final int particleSpawnCenterX = (int) (WIDTH * 0.5f);
+    final int particleSpawnCenterY = (int) (HEIGHT * 0.5f);
+
+    final float particleEmitterRadius = 50;
+
+    CircleOutlineParticleEmitter particleEmitter = new CircleOutlineParticleEmitter(
+        particleSpawnCenterX, particleSpawnCenterY, particleEmitterRadius);
+
+    final float minSpawnRate = 50;
+    final float maxSpawnRate = 100;
+    final int maxParticleCount = 300;
+
+    BatchedSpriteParticleSystem particleSystem = new BatchedSpriteParticleSystem(
+        particleEmitter, minSpawnRate, maxSpawnRate, maxParticleCount,
+        this.mParticleRegion, this.mEngine.getVertexBufferObjectManager());
+
+    particleSystem
+        .addParticleInitializer(new AccelerationParticleInitializer<UncoloredSprite>(
+            -WIDTH/5, WIDTH/5, -HEIGHT/5, HEIGHT/5));
+
+//    particleSystem
+//        .addParticleInitializer(new ScaleParticleInitializer<UncoloredSprite>(
+//            0.5f, 2.5f));
+
+    particleSystem
+        .addParticleInitializer(new ExpireParticleInitializer<UncoloredSprite>(
+            3, 5));
+    particleSystem
+        .addParticleInitializer(new AlphaParticleInitializer<UncoloredSprite>(
+            0.3f, 0.7f));
+
+    particleSystem
+        .addParticleInitializer(new ColorParticleInitializer<UncoloredSprite>(
+            0f, 1f, 0f, 1f, 0f, 1f));
+
+    particleSystem
+        .addParticleModifier(new ScaleParticleModifier<UncoloredSprite>(0f, 3f,
+            0.2f, 1.5f));
+
+    mScene.attachChild(particleSystem);
+
+    // End Particle Test
 
     ButtonSprite startButtonSprite = new ButtonSprite(WIDTH * 0.5f,
         HEIGHT * 0.7f, this.mStartButtonTextureRegion,
