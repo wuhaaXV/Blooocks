@@ -64,7 +64,7 @@ public class Tetris extends Entity {
     mStone.rotateRight();
   }
 
-  public synchronized void moveDown() {
+  public synchronized boolean moveDown() {
     ArrayList<Entity> croppedBricks;
     int croppedLinesCount = 0;
     
@@ -83,8 +83,10 @@ public class Tetris extends Entity {
         // todo: do something useful. Just restart for now
         initField();
       }
+      return false;
     } else {
       mStone.moveDown();
+      return true;
     }
   }
 
@@ -97,7 +99,7 @@ public class Tetris extends Entity {
           ){ @Override
           protected void onModifierFinished(IEntity pItem) {
             mMainActivity.detachFromScene(e);
-            super.onModifierFinished(pItem); // todo: does that stale?!
+            super.onModifierFinished(pItem);
             // todo: recycling e would be fine.
           }};
           e.registerEntityModifier(modifier);
@@ -144,7 +146,7 @@ public class Tetris extends Entity {
   }
 
   public synchronized void moveToBottom() {
-
+    while (moveDown());
   }
 
 }
