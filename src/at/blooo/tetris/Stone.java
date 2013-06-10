@@ -27,13 +27,13 @@ public class Stone {
     for (int c = 0; c < mPartsPerSide; c++) {
       for (int r = 0; r < mPartsPerSide; r++) {
         if (mParts[c][r] != null) {
-          mTetris.mMainActivity.removeFromScene(mParts[c][r]);
+          mTetris.mMainActivity.detachFromScene(mParts[c][r]);
           mParts[c][r] = null;
         }
       }
     }
   }
-
+/*
   public void setStone() {
 
     clear();
@@ -52,6 +52,29 @@ public class Stone {
       for (int r = 0; r < mPartsPerSide; r++) {
         if (mParts[c][r] != null)
           //mParts[c][r].setAnchorCenter(-mPartSize/2.f,-mPartSize/2.f);
+          mTetris.attachChild(mParts[c][r]);
+      }
+    }
+  }
+  */
+  public void setStone(boolean[][] field){
+    clear();
+    
+    mCol = mTetris.COLUMNS / 2 - mPartsPerSide / 2;
+    mRow = mTetris.ROWS - mPartsPerSide;
+    
+    for (int i = 0; i < field.length; i++){
+      for (int j = 0; j < field[0].length; j++){
+        if (field[i][j] == true){
+          mParts[i][j] = mTetris.mMainActivity.createBlock(0,0);
+        }
+      }
+    }
+    
+    updatePartsPositions();
+    for (int c = 0; c < mPartsPerSide; c++) {
+      for (int r = 0; r < mPartsPerSide; r++) {
+        if (mParts[c][r] != null)
           mTetris.attachChild(mParts[c][r]);
       }
     }

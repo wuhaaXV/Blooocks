@@ -24,6 +24,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import android.view.KeyEvent;
+import at.blooo.minigame.MiniGameManager;
+import at.blooo.minigame.MyMinigame;
 import at.blooo.tetris.Tetris;
 
 public class MainActivity extends BaseGameActivity implements
@@ -45,6 +47,7 @@ public class MainActivity extends BaseGameActivity implements
   float mSpeed = 0.5f;
 
   Tetris mTetris;
+  Entity mMiniGameFrame;
 
   @Override
   public void onResumeGame() {
@@ -116,11 +119,18 @@ public class MainActivity extends BaseGameActivity implements
   public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
 
     mScene = new Scene();
-    mTetris = new Tetris(this);
-
-    mTetris.setPosition(0, 0);
+    mMiniGameFrame = new Entity();
+    mMiniGameFrame.setSize(WIDTH/2, HEIGHT);
+    mMiniGameFrame.setPosition(WIDTH/2 + WIDTH/4, HEIGHT/2);
+    mScene.attachChild(mMiniGameFrame);
+    
+    MiniGameManager mgm = new MiniGameManager(this, this.mTetris, mMiniGameFrame);
+    
+    mTetris = new Tetris(this, mgm);
     mTetris.initField();
+    
     mScene.attachChild(mTetris);
+    mTetris.setPosition(0, 0);
     mTetris.setScale(0.55f);
 
     pOnCreateSceneCallback.onCreateSceneFinished(mScene);
@@ -199,7 +209,7 @@ public class MainActivity extends BaseGameActivity implements
     return super.onKeyDown(keyCode, event);
   }
 
-  public void removeFromScene(final Entity e) {
+  public void detachFromScene(final Entity e) {
     runOnUpdateThread(new Runnable() {
       
       @Override

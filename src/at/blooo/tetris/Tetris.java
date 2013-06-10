@@ -6,6 +6,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
 import android.util.Log;
 import at.blooo.MainActivity;
+import at.blooo.minigame.MiniGameManager;
 
 public class Tetris extends Entity {
 
@@ -17,9 +18,11 @@ public class Tetris extends Entity {
   Entity[][] mField = new Entity[COLUMNS][ROWS];
   MainActivity mMainActivity;
   Stone mStone;
+  MiniGameManager mMiniGameManager;
 
-  public Tetris(MainActivity mainActivity) {
+  public Tetris(MainActivity mainActivity, MiniGameManager mgm) {
     mMainActivity = mainActivity;
+    mMiniGameManager = mgm;
     mStone = new Stone(this, mPartSize, mStoneSize);
     
     Entity bg = mMainActivity.createTetrisBG(COLUMNS * mPartSize, ROWS * mPartSize);
@@ -34,19 +37,13 @@ public class Tetris extends Entity {
       for (int c = 0; c < COLUMNS; c++) {
         if (mField[c][r] != null) {
           final Entity e = mField[c][r];
-          mMainActivity.removeFromScene(e);
+          mMainActivity.detachFromScene(e);
           mField[c][r] = null;
         }
       }
     }
-    
-    /*   
-    this.attachChild(mMainActivity.createBlock(0 * mPartSize,      0 * mPartSize));
-    this.attachChild(mMainActivity.createBlock((COLUMNS-1) * mPartSize, 0 * mPartSize));
-    this.attachChild(mMainActivity.createBlock(0 * mPartSize,      (ROWS-1) * mPartSize));
-    this.attachChild(mMainActivity.createBlock((COLUMNS-1) * mPartSize, (ROWS-1) * mPartSize));
-    */
-    mStone.setStone();
+
+    mStone.setStone(mMiniGameManager.getNext());
   }
 
   public synchronized void moveLeft() {
@@ -65,7 +62,7 @@ public class Tetris extends Entity {
     if (mStone.collidesOnNextDrop()) {
       mStone.freeze();
       cropFullLines();
-      mStone.setStone();
+      mStone.setStone(mMiniGameManager.getNext());
       if (mStone.collides()){
         Log.d("Tetris", "You Lost!");
         // todo: do something useful. Just restart for now
@@ -92,7 +89,7 @@ public class Tetris extends Entity {
           for (int c2 = 0; c2 < COLUMNS; c2++){
             
             if (mField[c2][r2] != null){
-              mMainActivity.removeFromScene(mField[c2][r2]);
+              mMainActivity.detachFromScene(mField[c2][r2]);
             }
             
             mField[c2][r2] = mField[c2][r2+1];
