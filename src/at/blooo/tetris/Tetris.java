@@ -11,9 +11,10 @@ import at.blooo.minigame.MiniGameManager;
 public class Tetris extends Entity {
 
   final int COLUMNS = 10;
-  final int ROWS = 20;
+  final int ROWS = 25;
+  final int VISIBLE_ROWS = 25;
   final int mPartSize = 64;
-  final int mStoneSize = 4;
+  final int mStoneSize = 5;
 
   Entity[][] mField = new Entity[COLUMNS][ROWS];
   MainActivity mMainActivity;
@@ -25,7 +26,7 @@ public class Tetris extends Entity {
     mMiniGameManager = mgm;
     mStone = new Stone(this, mPartSize, mStoneSize);
     
-    Entity bg = mMainActivity.createTetrisBG(COLUMNS * mPartSize, ROWS * mPartSize);
+    Entity bg = mMainActivity.createTetrisBG(COLUMNS * mPartSize, VISIBLE_ROWS * mPartSize);
     bg.setPosition((COLUMNS * mPartSize) / 2, (ROWS * mPartSize) /2);
     this.attachChild(bg);
     

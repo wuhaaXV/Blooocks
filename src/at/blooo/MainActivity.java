@@ -41,6 +41,7 @@ public class MainActivity extends BaseGameActivity implements
   ITextureRegion mTetrisBackground;
   Scene mScene;
   int mBlocksize = 64;
+  
 
   float xVal = 0;
   float yVal = 0;
