@@ -1,8 +1,14 @@
 package at.blooo.tetris;
 
+import java.util.ArrayList;
+
 import org.andengine.entity.Entity;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.IEntityModifier;
+import org.andengine.entity.modifier.ParallelEntityModifier;
+import org.andengine.entity.modifier.RotationByModifier;
+import org.andengine.entity.modifier.ScaleModifier;
 
 import android.util.Log;
 import at.blooo.MainActivity;
@@ -59,10 +65,19 @@ public class Tetris extends Entity {
   }
 
   public synchronized void moveDown() {
+    ArrayList<Entity> croppedBricks;
+    int croppedLinesCount = 0;
+    
     if (mStone.collidesOnNextDrop()) {
+      croppedBricks = new ArrayList<Entity>();
+      
       mStone.freeze();
-      cropFullLines();
+      croppedLinesCount = cropFullLines(croppedBricks);
+      
+      destroyBricks(croppedBricks);
+      
       mStone.setStone(mMiniGameManager.getNext());
+      
       if (mStone.collides()){
         Log.d("Tetris", "You Lost!");
         // todo: do something useful. Just restart for now
@@ -73,8 +88,26 @@ public class Tetris extends Entity {
     }
   }
 
-  private void cropFullLines() {
+  private void destroyBricks(ArrayList<Entity> croppedBricks) {
+    for (final Entity e : croppedBricks){
+      IEntityModifier modifier = new ParallelEntityModifier(
+          new ScaleModifier(1.7f, 1.0f, 5.0f),
+          new RotationByModifier(1.7f, 200),
+          new AlphaModifier(1.7f, 0, 255)
+          ){ @Override
+          protected void onModifierFinished(IEntity pItem) {
+            mMainActivity.detachFromScene(e);
+            super.onModifierFinished(pItem); // todo: does that stale?!
+            // todo: recycling e would be fine.
+          }};
+          e.registerEntityModifier(modifier);
+    }
+    
+  }
+
+  private int cropFullLines(ArrayList<Entity> list) {
     int r, c;
+    int lineCount = 0;
     
     for (r = 0; r < ROWS; r++){
       boolean line_full = true;
@@ -85,11 +118,12 @@ public class Tetris extends Entity {
         }
       }
       if (line_full){                      // drop every row above by one
+        lineCount++;
         for (int r2 = r; r2 < ROWS-1; r2++){
           for (int c2 = 0; c2 < COLUMNS; c2++){
             
             if (mField[c2][r2] != null){
-              mMainActivity.detachFromScene(mField[c2][r2]);
+              list.add(mField[c2][r2]);
             }
             
             mField[c2][r2] = mField[c2][r2+1];
@@ -102,6 +136,7 @@ public class Tetris extends Entity {
         }
       }
     }
+    return lineCount;
   }
   
   void updatePartPos(int c, int r, Entity e){

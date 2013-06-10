@@ -25,7 +25,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 
 import android.view.KeyEvent;
 import at.blooo.minigame.MiniGameManager;
-import at.blooo.minigame.MyMinigame;
+import at.blooo.minigame.StandardTetrisMiniGame;
 import at.blooo.tetris.Tetris;
 
 public class MainActivity extends BaseGameActivity implements
