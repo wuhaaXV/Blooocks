@@ -143,6 +143,8 @@ public class MainActivity extends BaseGameActivity implements
   @Override
   public void onPopulateScene(Scene pScene,
       OnPopulateSceneCallback pOnPopulateSceneCallback) {
+    
+    mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
     mScene.registerUpdateHandler(new IUpdateHandler() {
 
@@ -234,5 +236,9 @@ public class MainActivity extends BaseGameActivity implements
     mTetrisBackground.setTextureSize(width, height);
     return new Sprite(0, 0, mTetrisBackground,
         mEngine.getVertexBufferObjectManager());
+  }
+  
+  public void registerTouchAres(Entity e){
+    mScene.registerTouchArea(e);
   }
 }
