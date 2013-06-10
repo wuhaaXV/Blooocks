@@ -34,6 +34,8 @@ public class MainActivity extends BaseGameActivity implements
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
 
+  public static final int FIGURE_SIZE = 5;
+  
   float mTime = 0.0f;
 
   Camera mCamera;

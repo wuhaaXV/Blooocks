@@ -3,6 +3,7 @@ package at.blooo.tetris;
 import org.andengine.entity.Entity;
 
 import android.util.Log;
+import at.blooo.MainActivity;
 
 public class Stone {
 
@@ -12,20 +13,18 @@ public class Stone {
 
   Entity[][] mParts;
   Entity[][] mTempParts;
-  int mPartsPerSide; /* number of parts along  x and y (array size) */
   int mPartSize; /* size of one part in pixels */
 
-  Stone(Tetris tetris, int partSize, int partsDim) {
+  Stone(Tetris tetris, int partSize) {
     mTetris = tetris;
-    mPartSize = partSize;
-    mPartsPerSide = partsDim;
-    mParts = new Entity[mPartsPerSide][mPartsPerSide];
-    mTempParts = new Entity[mPartsPerSide][mPartsPerSide];
+    mPartSize = partSize; 
+    mParts = new Entity[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
+    mTempParts = new Entity[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
   }
 
   void clear() {
-    for (int c = 0; c < mPartsPerSide; c++) {
-      for (int r = 0; r < mPartsPerSide; r++) {
+    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
+      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
         if (mParts[c][r] != null) {
           mTetris.mMainActivity.detachFromScene(mParts[c][r]);
           mParts[c][r] = null;
@@ -60,8 +59,8 @@ public class Stone {
   public void setStone(boolean[][] field){
     clear();
     
-    mCol = mTetris.COLUMNS / 2 - mPartsPerSide / 2;
-    mRow = mTetris.ROWS - mPartsPerSide;
+    mCol = mTetris.COLUMNS / 2 - MainActivity.FIGURE_SIZE / 2;
+    mRow = mTetris.ROWS - MainActivity.FIGURE_SIZE;
     
     for (int i = 0; i < field.length; i++){
       for (int j = 0; j < field[0].length; j++){
@@ -72,8 +71,8 @@ public class Stone {
     }
     
     updatePartsPositions();
-    for (int c = 0; c < mPartsPerSide; c++) {
-      for (int r = 0; r < mPartsPerSide; r++) {
+    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
+      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
         if (mParts[c][r] != null)
           mTetris.attachChild(mParts[c][r]);
       }
@@ -81,8 +80,8 @@ public class Stone {
   }
 
   boolean collides(int x, int y) {
-    for (int c = 0; c < mPartsPerSide; c++) {
-      for (int r = 0; r < mPartsPerSide; r++) {
+    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
+      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
         if (mParts[c][r] != null) {
           if (c + x >= mTetris.COLUMNS || c + x < 0 || 
               r + y >= mTetris.ROWS ||r + y < 0)
@@ -139,8 +138,8 @@ public class Stone {
   
 
   void updatePartsPositions(){
-    for (int c = 0; c < mPartsPerSide; c++) {
-      for (int r = 0; r < mPartsPerSide; r++) {
+    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
+      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
         if (mParts[c][r] != null) {
           Entity brick = mParts[c][r];
           brick.setPosition((c + mCol) * mPartSize + mPartSize/2, (r + mRow) * mPartSize + mPartSize/2);
@@ -150,9 +149,9 @@ public class Stone {
   }
   
   boolean rotateRight(){
-    for (int i = 0; i < mPartsPerSide; i++){
-      for (int j = 0; j < mPartsPerSide; j++){
-        mTempParts[i][j] = mParts[mPartsPerSide - j - 1][i];
+    for (int i = 0; i < MainActivity.FIGURE_SIZE; i++){
+      for (int j = 0; j < MainActivity.FIGURE_SIZE; j++){
+        mTempParts[i][j] = mParts[MainActivity.FIGURE_SIZE - j - 1][i];
       }
     }
     
@@ -170,8 +169,8 @@ public class Stone {
   }
   
   void freeze() {
-    for (int c = 0; c < mPartsPerSide; c++) {
-      for (int r = 0; r < mPartsPerSide; r++) {
+    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
+      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
         if (mParts[c][r] != null) {
           if (mTetris.mField[c + mCol][r + mRow] != null)
             Log.e("Tetris", "Overwriting stone on freezing");

@@ -18,7 +18,7 @@ public class MiniGameManager {
     mMainActivity = mainActivity;
     mTetris = tetris;
     mFrame = frame;
-    mCurrentMiniGame = new DummyMiniGame();
+    mCurrentMiniGame = new InitMiniGame();
     mFrame.attachChild((Entity)mCurrentMiniGame);
   }
   

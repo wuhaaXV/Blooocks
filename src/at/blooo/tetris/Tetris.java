@@ -14,7 +14,6 @@ public class Tetris extends Entity {
   final int ROWS = 25;
   final int VISIBLE_ROWS = 25;
   final int mPartSize = 64;
-  final int mStoneSize = 5;
 
   Entity[][] mField = new Entity[COLUMNS][ROWS];
   MainActivity mMainActivity;
@@ -24,7 +23,7 @@ public class Tetris extends Entity {
   public Tetris(MainActivity mainActivity, MiniGameManager mgm) {
     mMainActivity = mainActivity;
     mMiniGameManager = mgm;
-    mStone = new Stone(this, mPartSize, mStoneSize);
+    mStone = new Stone(this, mPartSize);
     
     Entity bg = mMainActivity.createTetrisBG(COLUMNS * mPartSize, VISIBLE_ROWS * mPartSize);
     bg.setPosition((COLUMNS * mPartSize) / 2, (ROWS * mPartSize) /2);

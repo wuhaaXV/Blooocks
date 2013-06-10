@@ -4,6 +4,8 @@ import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import at.blooo.MainActivity;
+
 public class MyMinigame extends Entity implements MiniGame{
   
   BaseGameActivity baseGameActivity;
@@ -15,7 +17,12 @@ public class MyMinigame extends Entity implements MiniGame{
   @Override
   public boolean[][] getField() {
     
-    boolean field[][] = {{false, false, false, false},{false, false, true, false},{false, true, true, false},{false, false, true, false}};
+    boolean field[][] =  new boolean[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
+    
+    field[1][2] = true;
+    field[2][2] = true;
+    field[2][3] = true;
+    field[3][2] = true;
     
     return field;
   }
