@@ -186,7 +186,7 @@ public class SelectorMiniGame extends Entity implements MiniGame {
     FigZ1.setColor(0.0f, 1.0f, 1.0f);
     this.attachChild(FigZ1);
 
-    FigZ2 = new Rectangle(3 * this.mWidth / 4, 0 * this.mHeight / 8, 100, 100,
+    FigZ2 = new Rectangle(3 * this.mWidth / 4, 2 * this.mHeight / 8, 100, 100,
         mMainActivity.getVertexBufferObjectManager()) {
       public boolean onAreaTouched(
           org.andengine.input.touch.TouchEvent pSceneTouchEvent,
@@ -204,7 +204,7 @@ public class SelectorMiniGame extends Entity implements MiniGame {
     FigZ2.setColor(1.0f, 1.0f, 1.0f);
     this.attachChild(FigZ2);
 
-    FigI = new Rectangle(3 * this.mWidth / 4, 2 * this.mHeight / 8, 100, 100,
+    FigI = new Rectangle(3 * this.mWidth / 4, 4 * this.mHeight / 8, 100, 100,
         mMainActivity.getVertexBufferObjectManager()) {
       public boolean onAreaTouched(
           org.andengine.input.touch.TouchEvent pSceneTouchEvent,
@@ -222,7 +222,7 @@ public class SelectorMiniGame extends Entity implements MiniGame {
     FigI.setColor(1.0f, 1.0f, 0.0f);
     this.attachChild(FigI);
 
-    FigSquare = new Rectangle(3 * this.mWidth / 4, 4 * this.mHeight / 8, 100,
+    FigSquare = new Rectangle(3 * this.mWidth / 4, 6 * this.mHeight / 8, 100,
         100, mMainActivity.getVertexBufferObjectManager()) {
       public boolean onAreaTouched(
           org.andengine.input.touch.TouchEvent pSceneTouchEvent,
