@@ -1,11 +1,13 @@
 package at.blooo.tetris;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.IEntityModifier;
+import org.andengine.entity.modifier.MoveByModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.RotationByModifier;
 import org.andengine.entity.modifier.ScaleModifier;
@@ -13,6 +15,8 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import at.blooo.MainActivity;
 import at.blooo.minigame.MiniGameManager;
 
@@ -108,9 +112,12 @@ public class Tetris extends Entity {
   }
 
   private void destroyBricks(ArrayList<Entity> croppedBricks) {
+    Random rng = new Random();
     for (final Entity e : croppedBricks) {
-      IEntityModifier modifier = new ParallelEntityModifier(new ScaleModifier(
-          1.7f, 1.0f, 5.0f), new RotationByModifier(1.7f, 200),
+      IEntityModifier modifier = new ParallelEntityModifier(
+          new ScaleModifier(1.7f, 1.0f, 0.2f), 
+          new RotationByModifier(1.7f, 200),
+          new MoveByModifier(1.7f, rng.nextInt(200) - 100, rng.nextInt(200) - 100),
           new AlphaModifier(1.7f, 0, 255)) {
         @Override
         protected void onModifierFinished(IEntity pItem) {
