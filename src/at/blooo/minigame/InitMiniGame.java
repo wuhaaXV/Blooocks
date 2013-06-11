@@ -17,8 +17,8 @@ public class InitMiniGame extends Entity implements MiniGame {
     Random rng = new Random();
     boolean field[][] = new boolean[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
     boolean found = false;
-    for (int row = 0; row < MainActivity.FIGURE_SIZE; row++){
-      for (int col = 0; col < MainActivity.FIGURE_SIZE; col++){
+    for (int row = 1; row < MainActivity.FIGURE_SIZE-1; row++){
+      for (int col = 1; col < MainActivity.FIGURE_SIZE-1; col++){
         
         int random = rng.nextInt(row+2);
         if (random == 0){

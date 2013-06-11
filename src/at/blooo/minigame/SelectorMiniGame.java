@@ -103,11 +103,15 @@ public class SelectorMiniGame extends Entity implements MiniGame {
   }
 
   private void resetButtons() {
-    /*
-     * FigT.setScale(10.f); FigL1.setScale(10.f); FigL2.setScale(10.f);
-     * FigZ1.setScale(10.f); FigZ2.setScale(10.f); FigSquare.setScale(10.f);
-     * FigI.setScale(10.f);
-     */
+
+    FigT.setScale(1.f);
+    FigL1.setScale(1.f);
+    FigL2.setScale(1.f);
+    FigZ1.setScale(1.f);
+    FigZ2.setScale(1.f);
+    FigSquare.setScale(1.f);
+    FigI.setScale(1.f);
+
   }
 
   @Override
