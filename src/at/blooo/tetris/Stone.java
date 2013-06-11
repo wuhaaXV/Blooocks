@@ -35,37 +35,14 @@ public class Stone {
       }
     }
   }
-/*
-  public void setStone() {
 
-    clear();
-
-    mCol = mTetris.COLUMNS / 2 - mPartsPerSide / 2;
-    mRow = mTetris.ROWS - mPartsPerSide;
-    
-    mParts[0][2] = mTetris.mMainActivity.createBlock(0,0);
-    mParts[1][2] = mTetris.mMainActivity.createBlock(0,0);
-    mParts[2][2] = mTetris.mMainActivity.createBlock(0,0);
-    mParts[2][3] = mTetris.mMainActivity.createBlock(0,0);
-
-    updatePartsPositions();
-    
-    for (int c = 0; c < mPartsPerSide; c++) {
-      for (int r = 0; r < mPartsPerSide; r++) {
-        if (mParts[c][r] != null)
-          //mParts[c][r].setAnchorCenter(-mPartSize/2.f,-mPartSize/2.f);
-          mTetris.attachChild(mParts[c][r]);
-      }
-    }
-  }
-  */
   
   Color getRandomColor(){
 
     Random rng = new Random();
     Color c;
     
-    switch (rng.nextInt(6)){
+    switch (rng.nextInt(5)){
     case 0:
       c = Color.YELLOW;
     break;
@@ -82,7 +59,7 @@ public class Stone {
       c = Color.CYAN;
     break;
     default:
-      c = Color.WHITE;
+      c = Color.WHITE; // white on white BG sucks!
     break;
     }
     

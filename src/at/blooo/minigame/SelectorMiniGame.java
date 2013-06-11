@@ -103,11 +103,13 @@ public class SelectorMiniGame extends Entity implements MiniGame {
   }
 
   private void resetButtons() {
-    /*
-     * FigT.setScale(10.f); FigL1.setScale(10.f); FigL2.setScale(10.f);
-     * FigZ1.setScale(10.f); FigZ2.setScale(10.f); FigSquare.setScale(10.f);
-     * FigI.setScale(10.f);
-     */
+    FigT.setScale(1.f);
+    FigL1.setScale(1.f);
+    FigL2.setScale(1.f);
+    FigZ1.setScale(1.f);
+    FigZ2.setScale(1.f);
+    FigSquare.setScale(1.f);
+    FigI.setScale(1.f);
   }
 
   @Override
@@ -127,7 +129,7 @@ public class SelectorMiniGame extends Entity implements MiniGame {
         return true;
       };
     };
-    FigT.setColor(1.0f, 0.0f, 0.0f);
+    FigT.setColor(1.0f, 0.5f, 0.0f);
     mMainActivity.registerTouchArea(FigT);
     this.attachChild(FigT);
 
@@ -144,7 +146,7 @@ public class SelectorMiniGame extends Entity implements MiniGame {
         return true;
       };
     };
-    FigL1.setColor(1.0f, 0.0f, 0.0f);
+    FigL1.setColor(1.0f, 0.0f, 1.0f);
     mMainActivity.registerTouchArea(FigL1);
     this.attachChild(FigL1);
 
@@ -163,7 +165,7 @@ public class SelectorMiniGame extends Entity implements MiniGame {
     };
 
     mMainActivity.registerTouchArea(FigL2);
-    FigL2.setColor(1.0f, 0.0f, 0.0f);
+    FigL2.setColor(0.0f, 0.0f, 1.0f);
     this.attachChild(FigL2);
 
     FigZ1 = new Rectangle(this.mWidth / 4, 7 * this.mHeight / 8, 100, 100,
@@ -181,10 +183,10 @@ public class SelectorMiniGame extends Entity implements MiniGame {
     };
 
     mMainActivity.registerTouchArea(FigZ1);
-    FigZ1.setColor(1.0f, 0.0f, 0.0f);
+    FigZ1.setColor(0.0f, 1.0f, 1.0f);
     this.attachChild(FigZ1);
 
-    FigZ2 = new Rectangle(3 * this.mWidth / 4, 1 * this.mHeight / 8, 100, 100,
+    FigZ2 = new Rectangle(3 * this.mWidth / 4, 0 * this.mHeight / 8, 100, 100,
         mMainActivity.getVertexBufferObjectManager()) {
       public boolean onAreaTouched(
           org.andengine.input.touch.TouchEvent pSceneTouchEvent,
@@ -199,10 +201,10 @@ public class SelectorMiniGame extends Entity implements MiniGame {
     };
 
     mMainActivity.registerTouchArea(FigZ2);
-    FigZ2.setColor(1.0f, 0.0f, 0.0f);
+    FigZ2.setColor(1.0f, 1.0f, 1.0f);
     this.attachChild(FigZ2);
 
-    FigI = new Rectangle(3 * this.mWidth / 4, 3 * this.mHeight / 8, 100, 100,
+    FigI = new Rectangle(3 * this.mWidth / 4, 2 * this.mHeight / 8, 100, 100,
         mMainActivity.getVertexBufferObjectManager()) {
       public boolean onAreaTouched(
           org.andengine.input.touch.TouchEvent pSceneTouchEvent,
@@ -217,10 +219,10 @@ public class SelectorMiniGame extends Entity implements MiniGame {
     };
 
     mMainActivity.registerTouchArea(FigI);
-    FigI.setColor(1.0f, 0.0f, 0.0f);
+    FigI.setColor(1.0f, 1.0f, 0.0f);
     this.attachChild(FigI);
 
-    FigSquare = new Rectangle(3 * this.mWidth / 4, 5 * this.mHeight / 8, 100,
+    FigSquare = new Rectangle(3 * this.mWidth / 4, 4 * this.mHeight / 8, 100,
         100, mMainActivity.getVertexBufferObjectManager()) {
       public boolean onAreaTouched(
           org.andengine.input.touch.TouchEvent pSceneTouchEvent,
