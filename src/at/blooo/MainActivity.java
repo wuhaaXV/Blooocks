@@ -35,7 +35,7 @@ public class MainActivity extends BaseGameActivity implements
   public static final int HEIGHT = 720;
 
   public static final int FIGURE_SIZE = 5;
-  
+
   float mTime = 0.0f;
 
   Camera mCamera;
@@ -43,7 +43,6 @@ public class MainActivity extends BaseGameActivity implements
   ITextureRegion mTetrisBackground;
   Scene mScene;
   int mBlocksize = 64;
-  
 
   float xVal = 0;
   float yVal = 0;
@@ -122,15 +121,16 @@ public class MainActivity extends BaseGameActivity implements
 
     mScene = new Scene();
     mMiniGameFrame = new Entity();
-    mMiniGameFrame.setSize(WIDTH/2, HEIGHT);
-    mMiniGameFrame.setPosition(WIDTH/2 + WIDTH/4, HEIGHT/2);
+    mMiniGameFrame.setSize(WIDTH / 2, HEIGHT);
+    mMiniGameFrame.setPosition(WIDTH / 2 + WIDTH / 4, HEIGHT / 2);
     mScene.attachChild(mMiniGameFrame);
-    
-    MiniGameManager mgm = new MiniGameManager(this, this.mTetris, mMiniGameFrame);
-    
+
+    MiniGameManager mgm = new MiniGameManager(this, this.mTetris,
+        mMiniGameFrame);
+
     mTetris = new Tetris(this, mgm);
     mTetris.initField();
-    
+
     mScene.attachChild(mTetris);
     mTetris.setPosition(0, 0);
     mTetris.setScale(0.55f);
@@ -142,7 +142,7 @@ public class MainActivity extends BaseGameActivity implements
   @Override
   public void onPopulateScene(Scene pScene,
       OnPopulateSceneCallback pOnPopulateSceneCallback) {
-    
+
     mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
     mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -174,7 +174,7 @@ public class MainActivity extends BaseGameActivity implements
 
       @Override
       public void reset() {
-        
+
       }
 
     });
@@ -214,10 +214,10 @@ public class MainActivity extends BaseGameActivity implements
 
     return super.onKeyDown(keyCode, event);
   }
-  
+
   public void detachFromScene(final Entity e) {
     runOnUpdateThread(new Runnable() {
-      
+
       @Override
       public void run() {
         e.detachSelf();
@@ -231,13 +231,14 @@ public class MainActivity extends BaseGameActivity implements
     return s;
   }
 
-  public Sprite createTetrisBG(int width, int height) {
-    mTetrisBackground.setTextureSize(width, height);
-    return new Sprite(0, 0, mTetrisBackground,
-        mEngine.getVertexBufferObjectManager());
+  public ITextureRegion createTetrisBG() {
+    
+    return mTetrisBackground;
   }
-  
-  public void registerTouchAres(Entity e){
-    mScene.registerTouchArea(e);
+
+  public void registerTouchArea(final Entity e) {
+
+        mScene.registerTouchArea(e);
+
   }
 }

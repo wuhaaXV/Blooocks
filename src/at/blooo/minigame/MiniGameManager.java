@@ -39,7 +39,7 @@ public class MiniGameManager {
 
   private MiniGame getRandomMinigame() {
     
-    StandardTetrisMiniGame mini = new StandardTetrisMiniGame(mMainActivity);
+    SelectorMiniGame mini = new SelectorMiniGame(mMainActivity);
     //SelectorMiniGame mini = new SelectorMiniGame(mMainActivity);
     
     mini.setSize(mFrame.getWidth(), mFrame.getHeight());
