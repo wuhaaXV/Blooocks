@@ -1,6 +1,9 @@
 package at.blooo.tetris;
 
+import java.util.Random;
+
 import org.andengine.entity.Entity;
+import org.andengine.util.adt.color.Color;
 
 import android.util.Log;
 import at.blooo.MainActivity;
@@ -56,16 +59,49 @@ public class Stone {
     }
   }
   */
+  
+  Color getRandomColor(){
+
+    Random rng = new Random();
+    Color c;
+    
+    switch (rng.nextInt(6)){
+    case 0:
+      c = Color.YELLOW;
+    break;
+    case 1:
+      c = Color.GREEN;
+    break;
+    case 2:
+      c = Color.BLUE;
+    break;
+    case 3:
+      c = Color.RED;
+    break;
+    case 4:
+      c = Color.CYAN;
+    break;
+    default:
+      c = Color.WHITE;
+    break;
+    }
+    
+    return c;
+  }
+  
   public void setStone(boolean[][] field){
     clear();
     
     mCol = mTetris.COLUMNS / 2 - MainActivity.FIGURE_SIZE / 2;
     mRow = mTetris.ROWS - MainActivity.FIGURE_SIZE;
     
+    Color color = getRandomColor();
+    
     for (int i = 0; i < field.length; i++){
       for (int j = 0; j < field[0].length; j++){
         if (field[i][j] == true){
           mParts[i][j] = mTetris.mMainActivity.createBlock(0,0);
+          mParts[i][j].setColor(color);
         }
       }
     }

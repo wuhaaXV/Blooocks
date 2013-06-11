@@ -22,10 +22,10 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.adt.color.Color;
 
 import android.view.KeyEvent;
 import at.blooo.minigame.MiniGameManager;
-import at.blooo.minigame.StandardTetrisMiniGame;
 import at.blooo.tetris.Tetris;
 
 public class MainActivity extends BaseGameActivity implements
@@ -87,7 +87,7 @@ public class MainActivity extends BaseGameActivity implements
     BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
     BuildableBitmapTextureAtlas mBuildableBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
-        mEngine.getTextureManager(), 1024, 1024, BitmapTextureFormat.RGB_565,
+        mEngine.getTextureManager(), 1024, 1024, BitmapTextureFormat.RGBA_8888,
         TextureOptions.BILINEAR);
 
     this.mBlock = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
@@ -96,7 +96,6 @@ public class MainActivity extends BaseGameActivity implements
     BuildableBitmapTextureAtlas tetrisBgTextureAtlas = new BuildableBitmapTextureAtlas(
         mEngine.getTextureManager(), 64, 64, TextureOptions.REPEATING_BILINEAR);
 
-    // Create our texture region - nothing new here
     mTetrisBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
         tetrisBgTextureAtlas, this, "tetrisBgTile.png");
 
@@ -175,8 +174,7 @@ public class MainActivity extends BaseGameActivity implements
 
       @Override
       public void reset() {
-        // TODO Auto-generated method stub
-
+        
       }
 
     });
@@ -186,7 +184,6 @@ public class MainActivity extends BaseGameActivity implements
 
   @Override
   public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
-    // TODO Auto-generated method stub
   }
 
   @Override
@@ -229,7 +226,9 @@ public class MainActivity extends BaseGameActivity implements
   }
 
   public Sprite createBlock(int x, int y) {
-    return new Sprite(x, y, mBlock, mEngine.getVertexBufferObjectManager());
+    Sprite s = new Sprite(x, y, mBlock, mEngine.getVertexBufferObjectManager());
+    s.setColor(0.9f, 0.5f, 0.0f);
+    return s;
   }
 
   public Sprite createTetrisBG(int width, int height) {
