@@ -36,7 +36,8 @@ public class MainActivity extends BaseGameActivity implements
 
   public static final int FIGURE_SIZE = 5;
 
-  float mTime = 0.0f;
+  float mVerTime = 0.0f;
+  float mHorTime = 0.0f;
 
   Camera mCamera;
   ITextureRegion mBlock;
@@ -46,7 +47,8 @@ public class MainActivity extends BaseGameActivity implements
 
   float xVal = 0;
   float yVal = 0;
-  float mSpeed = 0.5f;
+  float mVerSpeed = 0.5f;
+  float mHorSpeed = 0.2f;
 
   Tetris mTetris;
   Entity mMiniGameFrame;
@@ -149,27 +151,29 @@ public class MainActivity extends BaseGameActivity implements
 
       @Override
       public void onUpdate(float pSecondsElapsed) {
-        MainActivity.this.mTime += pSecondsElapsed;
+        MainActivity.this.mVerTime += pSecondsElapsed;
+        MainActivity.this.mHorTime += pSecondsElapsed;
 
-        if (MainActivity.this.mTime < mSpeed) {
-          return;
+        if (MainActivity.this.mVerTime >= mVerSpeed) {
+          mTetris.moveDown();
+          MainActivity.this.mVerTime = 0;
         }
+        
+        if (MainActivity.this.mHorTime >= mHorSpeed) {
+          int val = (int) (MainActivity.this.xVal);
 
-        MainActivity.this.mTime = 0;
+          if (val < 0) {
+            for (int i = val; i < 0; i++)
+              mTetris.moveLeft();
+          }
 
-        int val = (int) (MainActivity.this.xVal);
-
-        if (val < 0) {
-          for (int i = val; i < 0; i++)
-            mTetris.moveLeft();
+          if (val > 0) {
+            for (int i = val; i > 0; i--)
+              mTetris.moveRight();
+          }
+          MainActivity.this.mHorTime = 0;
         }
-
-        if (val > 0) {
-          for (int i = val; i > 0; i--)
-            mTetris.moveRight();
-        }
-
-        mTetris.moveDown();
+        
       }
 
       @Override
