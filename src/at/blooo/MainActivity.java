@@ -231,7 +231,6 @@ public class MainActivity extends BaseGameActivity implements
 
   public Sprite createBlock(int x, int y) {
     Sprite s = new Sprite(x, y, mBlock, mEngine.getVertexBufferObjectManager());
-    s.setColor(0.9f, 0.5f, 0.0f);
     return s;
   }
 

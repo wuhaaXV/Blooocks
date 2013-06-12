@@ -15,8 +15,6 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import at.blooo.MainActivity;
 import at.blooo.minigame.MiniGameManager;
 
@@ -24,7 +22,7 @@ public class Tetris extends Entity {
 
   final int COLUMNS = 10;
   final int ROWS = 25;
-  final int VISIBLE_ROWS = 25;
+  final int VISIBLE_ROWS = 20;
   final int mPartSize = 64;
 
   Entity[][] mField = new Entity[COLUMNS][ROWS];
@@ -51,7 +49,7 @@ public class Tetris extends Entity {
         return true;
       };
     };
-    bg.setPosition((COLUMNS * mPartSize) / 2, (ROWS * mPartSize) / 2);
+    bg.setPosition((COLUMNS * mPartSize) / 2, (VISIBLE_ROWS * mPartSize) / 2);
 
     mMainActivity.registerTouchArea(bg);
     this.attachChild(bg);
@@ -115,10 +113,10 @@ public class Tetris extends Entity {
     Random rng = new Random();
     for (final Entity e : croppedBricks) {
       IEntityModifier modifier = new ParallelEntityModifier(
-          new ScaleModifier(1.7f, 1.0f, 0.2f), 
-          new RotationByModifier(1.7f, 200),
-          new MoveByModifier(1.7f, rng.nextInt(200) - 100, rng.nextInt(200) - 100),
-          new AlphaModifier(1.7f, 0, 255)) {
+          new ScaleModifier(0.5f, 1.0f, 0.2f), 
+          new RotationByModifier(0.5f, 200),
+          new MoveByModifier(0.5f, rng.nextInt(400) - 200, rng.nextInt(400) - 200),
+          new AlphaModifier(0.5f, 0, 255)) {
         @Override
         protected void onModifierFinished(IEntity pItem) {
           mMainActivity.detachFromScene(e);
