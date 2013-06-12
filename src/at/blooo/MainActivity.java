@@ -127,7 +127,7 @@ public class MainActivity extends BaseGameActivity implements
     mMiniGameFrame.setPosition(WIDTH / 2 + WIDTH / 4, HEIGHT / 2);
     mScene.attachChild(mMiniGameFrame);
 
-    MiniGameManager mgm = new MiniGameManager(this, this.mTetris,
+    MiniGameManager mgm = new MiniGameManager(this, mTetris,
         mMiniGameFrame);
 
     mTetris = new Tetris(this, mgm);

@@ -1,11 +1,14 @@
 package at.blooo.minigame;
 
-public interface MiniGame{
-  
-  boolean[][] getField();
+import org.andengine.entity.Entity;
 
-  void quit();
-
-  void start();
+public abstract class MiniGame extends Entity {
   
+  
+  
+  abstract boolean[][] getField();
+
+  abstract void quit();
+
+  abstract void start();
 }

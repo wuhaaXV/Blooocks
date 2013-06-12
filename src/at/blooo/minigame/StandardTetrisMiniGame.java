@@ -8,7 +8,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 
 import at.blooo.MainActivity;
 
-public class StandardTetrisMiniGame extends Entity implements MiniGame{
+public class StandardTetrisMiniGame extends MiniGame{
   
   BaseGameActivity baseGameActivity;
   

@@ -9,7 +9,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 import android.util.Log;
 import at.blooo.MainActivity;
 
-public class SelectorMiniGame extends Entity implements MiniGame {
+public class SelectorMiniGame extends MiniGame {
 
   MainActivity mMainActivity;
 

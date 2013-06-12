@@ -6,7 +6,7 @@ import org.andengine.entity.Entity;
 
 import at.blooo.MainActivity;
 
-public class InitMiniGame extends Entity implements MiniGame {
+public class InitMiniGame extends MiniGame {
 
   public InitMiniGame(){
     
