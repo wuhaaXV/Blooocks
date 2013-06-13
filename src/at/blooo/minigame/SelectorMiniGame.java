@@ -1,25 +1,27 @@
 package at.blooo.minigame;
 
-import java.util.Random;
-
 import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.adt.color.Color;
 
 import android.util.Log;
 import at.blooo.MainActivity;
 
 public class SelectorMiniGame extends MiniGame {
 
+  
+  
   MainActivity mMainActivity;
-
-  Entity FigT;
-  Entity FigL1;
-  Entity FigL2;
-  Entity FigZ1;
-  Entity FigZ2;
-  Entity FigSquare;
-  Entity FigI;
+  
+  Entity[] mButtons = new Entity[7];
+  Color[]  mColors = {new Color(0,0,1),
+                      new Color(0,1,0),
+                      new Color(0,1,1),
+                      new Color(1,0,0),
+                      new Color(1,0,1),
+                      new Color(1,1,0),
+                      new Color(1,1,1),    
+  };
 
   int selected = -1;
 
@@ -29,71 +31,10 @@ public class SelectorMiniGame extends MiniGame {
 
   @Override
   public boolean[][] getField() {
-
-    boolean field[][] = new boolean[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
-
-    switch (selected) {
-    case 0:// T
-      field[1][2] = true;
-      field[2][2] = true;
-      field[2][3] = true;
-      field[3][2] = true;
-      break;
-    case 1: // L1
-      field[1][2] = true;
-      field[2][2] = true;
-      field[3][2] = true;
-      field[3][3] = true;
-      break;
-    case 2:// L2
-      field[1][2] = true;
-      field[1][3] = true;
-      field[2][2] = true;
-      field[3][2] = true;
-      break;
-    case 3:// Z1
-      field[1][2] = true;
-      field[2][2] = true;
-      field[2][1] = true;
-      field[3][1] = true;
-      break;
-    case 4:// Z2
-      field[1][1] = true;
-      field[2][1] = true;
-      field[2][2] = true;
-      field[3][2] = true;
-      break;
-    case 5:// I
-      field[1][2] = true;
-      field[2][2] = true;
-      field[3][2] = true;
-      field[4][2] = true;
-      break;
-    case 6:// square
-      field[1][1] = true;
-      field[1][2] = true;
-      field[2][1] = true;
-      field[2][2] = true;
-      break;
-    default:
-      field[0][0] = true;
-      field[0][1] = true;
-      field[0][2] = true;
-      field[0][3] = true;
-      field[0][4] = true;
-      field[1][0] = true;
-      field[1][4] = true;
-      field[2][0] = true;
-      field[2][4] = true;
-      field[3][0] = true;
-      field[3][4] = true;
-      field[4][0] = true;
-      field[4][1] = true;
-      field[4][2] = true;
-      field[4][3] = true;
-    }
-
-    return field;
+    if (selected >= 0)
+      return FigureFactory.createClassicTetrisById(selected);
+    
+    return FigureFactory.createWorst();
   }
 
   @Override
@@ -103,141 +44,42 @@ public class SelectorMiniGame extends MiniGame {
   }
 
   private void resetButtons() {
-    FigT.setScale(1.f);
-    FigL1.setScale(1.f);
-    FigL2.setScale(1.f);
-    FigZ1.setScale(1.f);
-    FigZ2.setScale(1.f);
-    FigSquare.setScale(1.f);
-    FigI.setScale(1.f);
+    for (int i = 0; i < mButtons.length; i++)
+      mButtons[i].setScale(1.f);
   }
 
   @Override
   public void start() {
-
-    FigT = new Rectangle(this.mWidth / 4, 1 * this.mHeight / 8, 100, 100,
-        mMainActivity.getVertexBufferObjectManager()) {
-      public boolean onAreaTouched(
-          org.andengine.input.touch.TouchEvent pSceneTouchEvent,
-          float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        Log.e("area touched", "yeah, you heard me!!");
-        if (pSceneTouchEvent.isActionDown()) {
-          resetButtons();
-          FigT.setScale(1.4f);
-          selected = 0;
-        }
-        return true;
+    int col;
+    int row;
+    
+    for (int i = 0; i < mButtons.length; i++){
+      final int finalI = i;
+      if (i < 4){
+        col = 1;
+        row = i*2+1;
+      } 
+      else{
+        col = 3;
+        row = (i-4)*2+2;
+      }
+      
+      mButtons[i] = new Rectangle(col * this.mWidth / 4, row * this.mHeight / 8, 100, 100,
+          mMainActivity.getVertexBufferObjectManager()) {
+        public boolean onAreaTouched(
+            org.andengine.input.touch.TouchEvent pSceneTouchEvent,
+            float pTouchAreaLocalX, float pTouchAreaLocalY) {
+          if (pSceneTouchEvent.isActionDown()) {
+            resetButtons();
+            mButtons[finalI].setScale(1.4f);
+            selected = finalI;
+          }
+          return true;
+        };
       };
-    };
-    FigT.setColor(1.0f, 0.5f, 0.0f);
-    mMainActivity.registerTouchArea(FigT);
-    this.attachChild(FigT);
-
-    FigL1 = new Rectangle(this.mWidth / 4, 3 * this.mHeight / 8, 100, 100,
-        mMainActivity.getVertexBufferObjectManager()) {
-      public boolean onAreaTouched(
-          org.andengine.input.touch.TouchEvent pSceneTouchEvent,
-          float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()) {
-          resetButtons();
-          FigL1.setScale(1.4f);
-          selected = 1;
-        }
-        return true;
-      };
-    };
-    FigL1.setColor(1.0f, 0.0f, 1.0f);
-    mMainActivity.registerTouchArea(FigL1);
-    this.attachChild(FigL1);
-
-    FigL2 = new Rectangle(this.mWidth / 4, 5 * this.mHeight / 8, 100, 100,
-        mMainActivity.getVertexBufferObjectManager()) {
-      public boolean onAreaTouched(
-          org.andengine.input.touch.TouchEvent pSceneTouchEvent,
-          float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()) {
-          resetButtons();
-          FigL2.setScale(1.4f);
-          selected = 2;
-        }
-        return true;
-      };
-    };
-
-    mMainActivity.registerTouchArea(FigL2);
-    FigL2.setColor(0.0f, 0.0f, 1.0f);
-    this.attachChild(FigL2);
-
-    FigZ1 = new Rectangle(this.mWidth / 4, 7 * this.mHeight / 8, 100, 100,
-        mMainActivity.getVertexBufferObjectManager()) {
-      public boolean onAreaTouched(
-          org.andengine.input.touch.TouchEvent pSceneTouchEvent,
-          float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()) {
-          resetButtons();
-          FigZ1.setScale(1.4f);
-          selected = 4;
-        }
-        return true;
-      };
-    };
-
-    mMainActivity.registerTouchArea(FigZ1);
-    FigZ1.setColor(0.0f, 1.0f, 1.0f);
-    this.attachChild(FigZ1);
-
-    FigZ2 = new Rectangle(3 * this.mWidth / 4, 2 * this.mHeight / 8, 100, 100,
-        mMainActivity.getVertexBufferObjectManager()) {
-      public boolean onAreaTouched(
-          org.andengine.input.touch.TouchEvent pSceneTouchEvent,
-          float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()) {
-          resetButtons();
-          FigZ2.setScale(1.4f);
-          selected = 5;
-        }
-        return true;
-      };
-    };
-
-    mMainActivity.registerTouchArea(FigZ2);
-    FigZ2.setColor(1.0f, 1.0f, 1.0f);
-    this.attachChild(FigZ2);
-
-    FigI = new Rectangle(3 * this.mWidth / 4, 4 * this.mHeight / 8, 100, 100,
-        mMainActivity.getVertexBufferObjectManager()) {
-      public boolean onAreaTouched(
-          org.andengine.input.touch.TouchEvent pSceneTouchEvent,
-          float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()) {
-          resetButtons();
-          FigI.setScale(1.4f);
-          selected = 6;
-        }
-        return true;
-      };
-    };
-
-    mMainActivity.registerTouchArea(FigI);
-    FigI.setColor(1.0f, 1.0f, 0.0f);
-    this.attachChild(FigI);
-
-    FigSquare = new Rectangle(3 * this.mWidth / 4, 6 * this.mHeight / 8, 100,
-        100, mMainActivity.getVertexBufferObjectManager()) {
-      public boolean onAreaTouched(
-          org.andengine.input.touch.TouchEvent pSceneTouchEvent,
-          float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()) {
-          resetButtons();
-          FigSquare.setScale(1.4f);
-          selected = 7;
-        }
-        return true;
-      };
-    };
-
-    mMainActivity.registerTouchArea(FigSquare);
-    FigSquare.setColor(1.0f, 0.0f, 0.0f);
-    this.attachChild(FigSquare);
+      mButtons[i].setColor(mColors[i]);
+      mMainActivity.registerTouchArea(mButtons[i]);
+      this.attachChild(mButtons[i]); 
+    }
   }
 }
