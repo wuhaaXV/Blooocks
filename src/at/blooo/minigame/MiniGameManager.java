@@ -11,7 +11,7 @@ public class MiniGameManager {
 
   @SuppressWarnings("rawtypes")
   Class mGameClasses[] = {
-      SelectorMiniGame.class,
+      WheelOfFortune.class,
       SelectorMiniGame.class
       };
   
@@ -50,7 +50,7 @@ public class MiniGameManager {
     int index = rng.nextInt(mGameClasses.length);
     
     try {
-      game = (MiniGame)mGameClasses[index].getConstructor(MainActivity.class).newInstance(mMainActivity);
+      game = (MiniGame)mGameClasses[index].getConstructor().newInstance();
     } catch (Exception e){
       e.printStackTrace();
       assert(false);

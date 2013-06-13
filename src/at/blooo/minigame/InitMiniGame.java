@@ -8,10 +8,7 @@ import at.blooo.MainActivity;
 
 public class InitMiniGame extends MiniGame {
 
-  public InitMiniGame(){
-    
-  }
-  
+
   @Override
   public boolean[][] getField() {
     Random rng = new Random();

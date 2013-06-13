@@ -19,10 +19,7 @@ import at.blooo.MainActivity;
 
 public class SelectorMiniGame extends MiniGame {
 
-  
-  
-  MainActivity mMainActivity;
-  
+   
   Entity[] mButtons = new Entity[7];
   Color[]  mColors = {new Color(0,0,1),
                       new Color(0,1,0),
@@ -34,10 +31,11 @@ public class SelectorMiniGame extends MiniGame {
   };
   ITextureRegion[] mTextures = new ITextureRegion[7];
 
+  MainActivity mMainActivity;
   int selected = -1;
 
-  public SelectorMiniGame(MainActivity mainActivity) {
-    mMainActivity = mainActivity;
+  public SelectorMiniGame() {
+    mMainActivity = MainActivity.instance();
   }
 
   @Override
@@ -50,7 +48,7 @@ public class SelectorMiniGame extends MiniGame {
 
   @Override
   public void quit() {
-    // nothing to do here
+    // todo: unload resources (textures)
   }
 
   private void resetButtons() {
@@ -59,6 +57,7 @@ public class SelectorMiniGame extends MiniGame {
   }
   
   void loadResources(){
+    /*
     BuildableBitmapTextureAtlas mBuildableBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
         mMainActivity.getEngine().getTextureManager(), 512, 512, BitmapTextureFormat.RGBA_8888,
         TextureOptions.BILINEAR);
@@ -87,6 +86,8 @@ public class SelectorMiniGame extends MiniGame {
     e.printStackTrace();
   }
    mBuildableBitmapTextureAtlas.load();
+   */
+    
   }
   
   @Override
@@ -106,8 +107,11 @@ public class SelectorMiniGame extends MiniGame {
         col = 3;
         row = (i-4)*2+2;
       }
-      
-      mButtons[i] = new Sprite(col * this.mWidth / 4,row * this.mHeight / 8,mTextures[i], mMainActivity.getVertexBufferObjectManager()) {
+    
+      boolean[][] fig = FigureFactory.createClassicTetrisById(i);
+      Entity button = FigureFactory.getSprite(fig, mColors[i]);
+            
+      mButtons[i] = new Entity(col * this.mWidth / 4,row * this.mHeight / 8, 64*5, 64*5) {
         public boolean onAreaTouched(
             org.andengine.input.touch.TouchEvent pSceneTouchEvent,
             float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -119,7 +123,9 @@ public class SelectorMiniGame extends MiniGame {
           return true;
         };
       };
-      mButtons[i].setColor(mColors[i]);
+      button.setScale(0.5f);
+      button.setPosition(64*5/2, 64*5/2);
+      mButtons[i].attachChild(button);
       mMainActivity.registerTouchArea(mButtons[i]);
       this.attachChild(mButtons[i]); 
     }

@@ -1,5 +1,8 @@
 package at.blooo.minigame;
 
+import org.andengine.entity.Entity;
+import org.andengine.util.adt.color.Color;
+
 import at.blooo.MainActivity;
 
 public class FigureFactory {
@@ -122,6 +125,25 @@ public class FigureFactory {
     }
 
     return fig;
+  }
+  
+  public static Entity getSprite(boolean[][] fig, Color color){
+    // todo: wanna center that thing?
+    Entity e = new Entity();
+    
+    for (int r = 0; r < MainActivity.FIGURE_SIZE; r++){
+      for (int c = 0; c < MainActivity.FIGURE_SIZE; c++){
+        if (fig[c][r] == true){
+          int x = MainActivity.BRICK_SIZE * (c- MainActivity.FIGURE_SIZE/2);
+          int y = MainActivity.BRICK_SIZE * (r- MainActivity.FIGURE_SIZE/2);
+          Entity block = MainActivity.instance().createBlock(x, y);
+          block.setColor(color);
+          e.attachChild(block);
+        }
+      }
+    }
+    
+    return e;
   }
   
 }

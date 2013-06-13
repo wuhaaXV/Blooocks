@@ -34,7 +34,8 @@ public class MainActivity extends BaseGameActivity implements
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
 
-  public static final int FIGURE_SIZE = 5;
+  public static final int FIGURE_SIZE = 5; /*Bricks per side of figure*/
+  public static final int BRICK_SIZE = 64; /*Pixels per brick side */
 
   float mVerTime = 0.0f;
   float mHorTime = 0.0f;
@@ -52,6 +53,11 @@ public class MainActivity extends BaseGameActivity implements
 
   Tetris mTetris;
   Entity mMiniGameFrame;
+  private static MainActivity mMainActivity = null;
+  
+  public static MainActivity instance(){
+    return mMainActivity;
+  }
 
   @Override
   public void onResumeGame() {
@@ -69,6 +75,8 @@ public class MainActivity extends BaseGameActivity implements
   public EngineOptions onCreateEngineOptions() {
     mCamera = new Camera(0, 0, WIDTH, HEIGHT);
 
+    mMainActivity = this;
+    
     EngineOptions engineOptions = new EngineOptions(true,
         ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), mCamera);
 
