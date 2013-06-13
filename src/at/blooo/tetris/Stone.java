@@ -156,10 +156,7 @@ public class Stone {
         if (mParts[c][r] != null) {
           Entity brick = mParts[c][r];
           brick.setPosition((c + mCol) * mPartSize + mPartSize/2, (r + mRow) * mPartSize + mPartSize/2);
-         // brick.setVisible(r <= mTetris.VISIBLE_ROWS);
-          // todo: tried to fix visible stones above field.
-          // ... needs more work, or just place sprite above field taht covers
-          // the stones...
+          brick.setVisible(r + mRow < mTetris.VISIBLE_ROWS);
         }
       }
     }
