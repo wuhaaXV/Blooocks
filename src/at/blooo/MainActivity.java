@@ -48,9 +48,9 @@ public class MainActivity extends BaseGameActivity implements
   float xVal = 0;
   float yVal = 0;
   float mVerSpeed = 0.5f;
-  float mHorSpeed = 0.2f;
+  float mHorSpeed = 0.15f;
 
-  Tetris mTetris;
+  public Tetris mTetris; //TODO public?
   Entity mMiniGameFrame;
 
   @Override
@@ -155,7 +155,7 @@ public class MainActivity extends BaseGameActivity implements
         MainActivity.this.mHorTime += pSecondsElapsed;
 
         if (MainActivity.this.mVerTime >= mVerSpeed) {
-          mTetris.moveDown();
+          //mTetris.moveDown();
           MainActivity.this.mVerTime = 0;
         }
         

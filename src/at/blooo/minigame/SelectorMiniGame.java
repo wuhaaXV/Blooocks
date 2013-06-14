@@ -230,7 +230,8 @@ public class SelectorMiniGame extends Entity implements MiniGame {
         if (pSceneTouchEvent.isActionDown()) {
           resetButtons();
           FigSquare.setScale(1.4f);
-          selected = 7;
+          mMainActivity.mTetris.moveDown();
+          //selected = 7;
         }
         return true;
       };

@@ -21,10 +21,10 @@ public class InitMiniGame extends Entity implements MiniGame {
       for (int col = 1; col < MainActivity.FIGURE_SIZE-1; col++){
         
         int random = rng.nextInt(row+2);
-        if (random == 0){
+        //if (random == 0){
           field[col][row] = true;
           found = true;
-        }
+        //}
       }
     }
     
