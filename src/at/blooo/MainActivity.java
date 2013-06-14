@@ -34,7 +34,8 @@ public class MainActivity extends BaseGameActivity implements
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
 
-  public static final int FIGURE_SIZE = 5;
+  public static final int FIGURE_SIZE = 5; /*Bricks per side of figure*/
+  public static final int BRICK_SIZE = 64; /*Pixels per brick side */
 
   float mVerTime = 0.0f;
   float mHorTime = 0.0f;
@@ -52,6 +53,11 @@ public class MainActivity extends BaseGameActivity implements
 
   public Tetris mTetris; //TODO public?
   Entity mMiniGameFrame;
+  private static MainActivity mMainActivity = null;
+  
+  public static MainActivity instance(){
+    return mMainActivity;
+  }
 
   @Override
   public void onResumeGame() {
@@ -69,6 +75,8 @@ public class MainActivity extends BaseGameActivity implements
   public EngineOptions onCreateEngineOptions() {
     mCamera = new Camera(0, 0, WIDTH, HEIGHT);
 
+    mMainActivity = this;
+    
     EngineOptions engineOptions = new EngineOptions(true,
         ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), mCamera);
 
@@ -127,7 +135,7 @@ public class MainActivity extends BaseGameActivity implements
     mMiniGameFrame.setPosition(WIDTH / 2 + WIDTH / 4, HEIGHT / 2);
     mScene.attachChild(mMiniGameFrame);
 
-    MiniGameManager mgm = new MiniGameManager(this, this.mTetris,
+    MiniGameManager mgm = new MiniGameManager(this, mTetris,
         mMiniGameFrame);
 
     mTetris = new Tetris(this, mgm);
@@ -231,7 +239,6 @@ public class MainActivity extends BaseGameActivity implements
 
   public Sprite createBlock(int x, int y) {
     Sprite s = new Sprite(x, y, mBlock, mEngine.getVertexBufferObjectManager());
-    s.setColor(0.9f, 0.5f, 0.0f);
     return s;
   }
 

@@ -1,14 +1,20 @@
 package at.blooo.minigame;
 
-import org.andengine.entity.Entity;
-import org.andengine.entity.primitive.Rectangle;
+import java.util.Random;
 
-import android.util.Log;
+import org.andengine.entity.Entity;
+
 import at.blooo.MainActivity;
 import at.blooo.tetris.Tetris;
 
 public class MiniGameManager {
 
+  @SuppressWarnings("rawtypes")
+  Class mGameClasses[] = {
+      WheelOfFortune.class,
+      SelectorMiniGame.class
+      };
+  
   Tetris mTetris;
   MainActivity mMainActivity;
   MiniGame mCurrentMiniGame;
@@ -17,9 +23,9 @@ public class MiniGameManager {
   public MiniGameManager(MainActivity mainActivity, Tetris tetris, Entity frame){
     mMainActivity = mainActivity;
     mTetris = tetris;
-    mFrame = frame;
     mCurrentMiniGame = new InitMiniGame();
-    mFrame.attachChild((Entity)mCurrentMiniGame);
+    mMainActivity = mainActivity;
+    mFrame = frame;
   }
   
   
@@ -32,20 +38,31 @@ public class MiniGameManager {
    
    mCurrentMiniGame = getRandomMinigame();
    mCurrentMiniGame.start();
-   mFrame.attachChild((Entity)mCurrentMiniGame);
     
     return field;
   }
 
+  @SuppressWarnings("unchecked")
   private MiniGame getRandomMinigame() {
     
-    SelectorMiniGame mini = new SelectorMiniGame(mMainActivity);
-    //SelectorMiniGame mini = new SelectorMiniGame(mMainActivity);
+    Random rng = new Random();
+    MiniGame game = null;
+    int index = rng.nextInt(mGameClasses.length);
     
-    mini.setSize(mFrame.getWidth(), mFrame.getHeight());
-    mini.setPosition(mFrame.getWidth()/2, mFrame.getHeight()/2);
-        
-    return mini;
+    try {
+      game = (MiniGame)mGameClasses[index].getConstructor().newInstance();
+    } catch (Exception e){
+      e.printStackTrace();
+      assert(false);
+    }
+    
+    mFrame.detachChildren();
+    
+    game.setSize(mFrame.getWidth(), mFrame.getHeight());
+    game.setPosition(mFrame.getWidth()/2, mFrame.getHeight()/2);
+    mFrame.attachChild(game);
+    
+    return game;
   }
   
   
