@@ -69,77 +69,42 @@ public class Tetris extends Entity {
     }
 
     mStone.setStone(mMiniGameManager.getNext());
-    mStone.mRow = 15;
-    mStone.mCol = 5;
   }
 
-  public synchronized boolean moveLeft() {
-    if (collides(mStone.mCol-1, mStone.mRow))
-      return false;
-
-    mStone.mCol--;
-    updatefigurePosition();
-    return true;
+  public synchronized void moveLeft() {
+    mStone.moveLeft();
   }
 
-  public synchronized boolean moveRight() {
-    if (collides(mStone.mCol + 1, mStone.mRow))
-      return false;
-
-    mStone.mCol++;
-    updatefigurePosition();
-    return true;
+  public synchronized void moveRight() {
+    mStone.moveRight();
   }
 
-  public synchronized boolean rotateRight() {
-    for (int i = 0; i < MainActivity.FIGURE_SIZE; i++){
-      for (int j = 0; j < MainActivity.FIGURE_SIZE; j++){
-        mStone.mTempParts[i][j] = mStone.mParts[MainActivity.FIGURE_SIZE - j - 1][i];
-      }
-    }
-    
-    Entity[][] swap = mStone.mParts;
-    mStone.mParts = mStone.mTempParts;
-    mStone.mTempParts = swap;
-    
-    if (collides()){
-      mStone.mTempParts = mStone.mParts;
-      mStone.mParts = swap;
-      return false;
-    }
-    
-    return true;
-  }
-  
-  private boolean collidesOnNextDrop(){
-    return collides(mStone.mCol, mStone.mRow-1);
+  public synchronized void rotateRight() {
+    mStone.rotateRight();
   }
 
   public synchronized boolean moveDown() {
-    
     ArrayList<Entity> croppedBricks;
     int croppedLinesCount = 0;
 
-    if (this.collidesOnNextDrop()) {
+    if (mStone.collidesOnNextDrop()) {
       croppedBricks = new ArrayList<Entity>();
 
-      freezeFigure();
+      mStone.freeze();
       croppedLinesCount = cropFullLines(croppedBricks);
 
       destroyBricks(croppedBricks);
 
       mStone.setStone(mMiniGameManager.getNext());
 
-      if (collides()) {
+      if (mStone.collides()) {
         Log.d("Tetris", "You Lost!");
         // todo: do something useful. Just restart for now
         initField();
       }
       return false;
     } else {
-      
-      mStone.mRow--;
-      updatefigurePosition();
+      mStone.moveDown();
       return true;
     }
   }
@@ -206,45 +171,5 @@ public class Tetris extends Entity {
     while (moveDown())
       ;
   }
-  
-  boolean collides(int x, int y) {
-    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
-      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
-        if (mStone.mParts[c][r] != null) {
-          if (c + x >= COLUMNS || c + x < 0 || 
-              r + y >= ROWS ||r + y < 0)
-            return true;
 
-          if (mField[c + x][r + y] != null)
-            return true;
-        }
-      }
-    }
-    return false;
-  }
-  
-  boolean collides(){
-    return collides(mStone.mCol, mStone.mRow);
-  }
-  
-  private void updatefigurePosition(){
-    //todo: hm. where should be the figures anchor. center or lower left corner
-    mStone.setPosition(mStone.mCol * MainActivity.BRICK_SIZE + mStone.getWidth()/2, mStone.mRow * MainActivity.BRICK_SIZE + mStone.getHeight()/2);
-  }
-
-  void freezeFigure() {
-    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
-      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
-        if (mStone.mParts[c][r] != null) {
-          if (mField[c + mStone.mCol][r + mStone.mRow] != null)
-            Log.e("Tetris", "Overwriting stone on freezing");
-
-          mField[c + mStone.mCol][r + mStone.mRow] = mStone.mParts[c][r];
-          mStone.mParts[c][r] = null;
-        }
-      }
-    }
-
-  }
-  
 }

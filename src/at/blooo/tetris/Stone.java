@@ -20,7 +20,7 @@ public class Stone {
 
   Stone(Tetris tetris, int partSize) {
     mTetris = tetris;
-    mPartSize = partSize;
+    mPartSize = partSize; 
     mParts = new Entity[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
     mTempParts = new Entity[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
   }
@@ -36,63 +36,36 @@ public class Stone {
     }
   }
 
-  Color getRandomColor() {
+  
+  Color getRandomColor(){
 
     Random rng = new Random();
     Color c;
-
-    switch (rng.nextInt(5)) {
+    
+    switch (rng.nextInt(5)){
     case 0:
       c = Color.YELLOW;
-      break;
+    break;
     case 1:
       c = Color.GREEN;
-      break;
+    break;
     case 2:
       c = Color.BLUE;
-      break;
+    break;
     case 3:
       c = Color.RED;
-      break;
+    break;
     case 4:
       c = Color.CYAN;
-      break;
+    break;
     default:
       c = Color.WHITE; // white on white BG sucks!
-      break;
+    break;
     }
-
+    
     return c;
-  }
-
-  public void setStone(boolean[][] field) {
-    clear();
-
-    mCol = mTetris.COLUMNS / 2 - MainActivity.FIGURE_SIZE / 2;
-    mRow = mTetris.ROWS - MainActivity.FIGURE_SIZE;
-
-    Color color = getRandomColor();
-
-    for (int i = 0; i < field.length; i++) {
-      for (int j = 0; j < field[0].length; j++) {
-        if (field[i][j] == true) {
-          mParts[i][j] = mTetris.mMainActivity.createBlock(0, 0);
-          mParts[i][j].setColor(color);
-        }
-      }
-    }
-
-    updatePartsPositions();
-    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
-      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
-        if (mParts[c][r] != null)
-          mTetris.attachChild(mParts[c][r]);
-      }
-    }
-
-    centerField();
-  }
-
+  }  
+  
   private void centerField() {
 
     int minX = 4;
@@ -140,13 +113,41 @@ public class Stone {
         mParts[x][y] = tmpField[x][y];
 
   }
+  
+  public void setStone(boolean[][] field){
+    clear();
+    
+    mCol = mTetris.COLUMNS / 2 - MainActivity.FIGURE_SIZE / 2;
+    mRow = mTetris.ROWS - MainActivity.FIGURE_SIZE;
+    
+    Color color = getRandomColor();
+    
+    for (int i = 0; i < field.length; i++){
+      for (int j = 0; j < field[0].length; j++){
+        if (field[i][j] == true){
+          mParts[i][j] = mTetris.mMainActivity.createBlock(0,0);
+          mParts[i][j].setColor(color);
+        }
+      }
+    }
+    
+    updatePartsPositions();
+    for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
+      for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
+        if (mParts[c][r] != null)
+          mTetris.attachChild(mParts[c][r]);
+      }
+    }
+    
+    centerField();
+  }
 
-  private boolean collides(int x, int y) {
+  boolean collides(int x, int y) {
     for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
       for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
         if (mParts[c][r] != null) {
-          if (c + x >= mTetris.COLUMNS || c + x < 0 || r + y >= mTetris.ROWS
-              || r + y < 0)
+          if (c + x >= mTetris.COLUMNS || c + x < 0 || 
+              r + y >= mTetris.ROWS ||r + y < 0)
             return true;
 
           if (mTetris.mField[c + x][r + y] != null)
@@ -156,14 +157,14 @@ public class Stone {
     }
     return false;
   }
-
-  boolean collides() {
+  
+  boolean collides(){
     return collides(mCol, mRow);
   }
 
   boolean moveLeft() {
 
-    if (collides(mCol - 1, mRow))
+    if (collides(mCol-1, mRow))
       return false;
 
     mCol--;
@@ -180,12 +181,12 @@ public class Stone {
     updatePartsPositions();
     return true;
   }
-
+  
   boolean moveDown() {
 
-    if (collides(mCol, mRow - 1))
+    if (collides(mCol, mRow -1))
       return false;
-
+    
     mRow--;
     updatePartsPositions();
     return true;
@@ -197,43 +198,42 @@ public class Stone {
 
     return collides(col, row);
   }
+  
 
-  void updatePartsPositions() {
+  void updatePartsPositions(){
     for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
       for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {
         if (mParts[c][r] != null) {
           Entity brick = mParts[c][r];
-          brick.setPosition((c + mCol) * mPartSize + mPartSize / 2, (r + mRow)
-              * mPartSize + mPartSize / 2);
+          brick.setPosition((c + mCol) * mPartSize + mPartSize/2, (r + mRow) * mPartSize + mPartSize/2);
+          brick.setVisible(r + mRow < mTetris.VISIBLE_ROWS);
         }
       }
     }
   }
-
-  boolean rotateRight() {
-    for (int i = 0; i < MainActivity.FIGURE_SIZE; i++) {
-      for (int j = 0; j < MainActivity.FIGURE_SIZE; j++) {
+  
+  boolean rotateRight(){
+    for (int i = 0; i < MainActivity.FIGURE_SIZE; i++){
+      for (int j = 0; j < MainActivity.FIGURE_SIZE; j++){
         mTempParts[i][j] = mParts[MainActivity.FIGURE_SIZE - j - 1][i];
       }
     }
-
+    
     Entity[][] swap = mParts;
     mParts = mTempParts;
     mTempParts = swap;
-
+    
     centerField();
-
-    if (collides()) {
+    
+    if (collides()){
       mTempParts = mParts;
       mParts = swap;
       return false;
     }
-
-    updatePartsPositions();
-
+    
     return true;
   }
-
+  
   void freeze() {
     for (int c = 0; c < MainActivity.FIGURE_SIZE; c++) {
       for (int r = 0; r < MainActivity.FIGURE_SIZE; r++) {

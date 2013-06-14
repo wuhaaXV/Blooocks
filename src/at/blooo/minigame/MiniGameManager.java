@@ -12,7 +12,8 @@ public class MiniGameManager {
   @SuppressWarnings("rawtypes")
   Class mGameClasses[] = {
       WheelOfFortune.class,
-      SelectorMiniGame.class
+      SelectorMiniGame.class,
+      LightsOutMiniGame.class
       };
   
   Tetris mTetris;
