@@ -27,6 +27,12 @@ public class FigureFactory {
     return field;
   }
   
+  public static boolean[][] createBest() {
+    boolean field[][] = new boolean[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];
+    field[0][0] = true;
+    return field;
+  }
+  
   static boolean[][] createT() {
 
     boolean field[][] = new boolean[MainActivity.FIGURE_SIZE][MainActivity.FIGURE_SIZE];

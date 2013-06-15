@@ -13,7 +13,8 @@ public class MiniGameManager {
   Class mGameClasses[] = {
       WheelOfFortune.class,
       SelectorMiniGame.class,
-      LightsOutMiniGame.class
+      LightsOutMiniGame.class,
+      TouchRunnerMinigame.class
       };
   
   Tetris mTetris;

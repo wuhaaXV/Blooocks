@@ -20,7 +20,6 @@ import at.blooo.MainActivity;
 
 public class LightsOutMiniGame extends MiniGame {
 
-  ITextureRegion mTextures;
   ITiledTextureRegion mButtonRegion;
 
   MainActivity mMainActivity;
