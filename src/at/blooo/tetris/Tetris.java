@@ -158,6 +158,7 @@ public class Tetris extends Entity {
             mField[c2][r2 + 1] = null;
           }
         }
+        r--;
       }
     }
     return lineCount;
