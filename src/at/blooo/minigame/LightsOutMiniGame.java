@@ -94,7 +94,12 @@ public class LightsOutMiniGame extends MiniGame {
   @Override
   public boolean[][] getField() {
 
-    return mField;
+    for (int y=0; y <5; y++)
+      for (int x =0; x< 5; x++)
+        if (mField[x][y])
+          return mField;
+    
+    return FigureFactory.createWorst(mMainActivity.mTetris.mField);
   }
 
   @Override

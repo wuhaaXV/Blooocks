@@ -32,7 +32,7 @@ public class SelectorMiniGame extends MiniGame {
     if (selected >= 0)
       return FigureFactory.createClassicTetrisById(selected);
     
-    return FigureFactory.createWorst();
+    return FigureFactory.createWorst(mMainActivity.mTetris.mField);
   }
 
   @Override

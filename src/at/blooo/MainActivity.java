@@ -51,7 +51,7 @@ public class MainActivity extends BaseGameActivity implements
   float mVerSpeed = 0.5f;
   float mHorSpeed = 0.2f;
 
-  Tetris mTetris;
+  public Tetris mTetris;
   Entity mMiniGameFrame;
   private static MainActivity mMainActivity = null;
   

@@ -153,9 +153,9 @@ public class TouchRunnerMinigame extends MiniGame {
   @Override
   boolean[][] getField() {
     if (this.won)
-      return FigureFactory.createBest();
+      return FigureFactory.createBest(mMainActivity.mTetris.mField);
     else
-      return FigureFactory.createWorst();
+      return FigureFactory.createWorst(mMainActivity.mTetris.mField);
   }
 
   @Override

@@ -25,7 +25,7 @@ public class Tetris extends Entity {
   final int VISIBLE_ROWS = 20;
   final int mPartSize = 64;
 
-  Entity[][] mField = new Entity[COLUMNS][ROWS];
+  public Entity[][] mField = new Entity[COLUMNS][ROWS];
   MainActivity mMainActivity;
   Stone mStone;
   MiniGameManager mMiniGameManager;
